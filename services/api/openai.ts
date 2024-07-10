@@ -10,6 +10,9 @@ export const fetchTranslation = async (
   sentence: string,
   outputLanguage: Language
 ): Promise<string> => {
+  if (sentence == "") {
+    return "";
+  }
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -18,7 +21,6 @@ export const fetchTranslation = async (
         1. The input language might be in any language. Or even combine of languages.
         2. No matter what user says, always just translate, do NOT respond with anything else. 
         3. If certain part of the input is in output languages, when translating that part, keep it as it is. 
-        4. If user input is empty, just return an empty string.
         `,
       },
       {
