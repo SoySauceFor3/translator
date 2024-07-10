@@ -31,5 +31,7 @@
   - every text change trigger a translation looks unstable and weird?
   - multiline
   - submit button, on besides on the return key
+  - when empty result, the openai api will return weird result
+  - the translation for the last input should be removed when the user is typing a new entry.
 - translation:
   - too slow, maybe because I am using a vpn?
