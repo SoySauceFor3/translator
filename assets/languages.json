@@ -1,51 +1,51 @@
 [
   {
-    "language": "English",
+    "name": "English",
     "acronym": "EN",
     "icon": "https://example.com/icons/english.png"
   },
   {
-    "language": "Mandarin Chinese",
+    "name": "Mandarin Chinese",
     "acronym": "中文",
     "icon": "https://example.com/icons/mandarin.png"
   },
   {
-    "language": "Hindi",
+    "name": "Hindi",
     "acronym": "हिन्दी",
     "icon": "https://example.com/icons/hindi.png"
   },
   {
-    "language": "Spanish",
+    "name": "Spanish",
     "acronym": "ES",
     "icon": "https://example.com/icons/spanish.png"
   },
   {
-    "language": "French",
+    "name": "French",
     "acronym": "FR",
     "icon": "https://example.com/icons/french.png"
   },
   {
-    "language": "Standard Arabic",
+    "name": "Standard Arabic",
     "acronym": "العربية",
     "icon": "https://example.com/icons/arabic.png"
   },
   {
-    "language": "Bengali",
+    "name": "Bengali",
     "acronym": "বাংলা",
     "icon": "https://example.com/icons/bengali.png"
   },
   {
-    "language": "Russian",
+    "name": "Russian",
     "acronym": "РУ",
     "icon": "https://example.com/icons/russian.png"
   },
   {
-    "language": "Portuguese",
+    "name": "Portuguese",
     "acronym": "PT",
     "icon": "https://example.com/icons/portuguese.png"
   },
   {
-    "language": "Urdu",
+    "name": "Urdu",
     "acronym": "اردو",
     "icon": "https://example.com/icons/urdu.png"
   }

@@ -1,5 +1,5 @@
 export type Language = {
-  language: string;
+  name: string;
   acronym: string;
   icon: string;
 };

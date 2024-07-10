@@ -11,7 +11,7 @@ export default function LanguageSelection() {
     <View>
       <FlatList
         data={languages as Language[]}
-        keyExtractor={(item) => item.language}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{
