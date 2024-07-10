@@ -1,0 +1,52 @@
+[
+  {
+    "language": "English",
+    "acronym": "EN",
+    "icon": "https://example.com/icons/english.png"
+  },
+  {
+    "language": "Mandarin Chinese",
+    "acronym": "中文",
+    "icon": "https://example.com/icons/mandarin.png"
+  },
+  {
+    "language": "Hindi",
+    "acronym": "हिन्दी",
+    "icon": "https://example.com/icons/hindi.png"
+  },
+  {
+    "language": "Spanish",
+    "acronym": "ES",
+    "icon": "https://example.com/icons/spanish.png"
+  },
+  {
+    "language": "French",
+    "acronym": "FR",
+    "icon": "https://example.com/icons/french.png"
+  },
+  {
+    "language": "Standard Arabic",
+    "acronym": "العربية",
+    "icon": "https://example.com/icons/arabic.png"
+  },
+  {
+    "language": "Bengali",
+    "acronym": "বাংলা",
+    "icon": "https://example.com/icons/bengali.png"
+  },
+  {
+    "language": "Russian",
+    "acronym": "РУ",
+    "icon": "https://example.com/icons/russian.png"
+  },
+  {
+    "language": "Portuguese",
+    "acronym": "PT",
+    "icon": "https://example.com/icons/portuguese.png"
+  },
+  {
+    "language": "Urdu",
+    "acronym": "اردو",
+    "icon": "https://example.com/icons/urdu.png"
+  }
+]

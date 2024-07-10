@@ -1,11 +1,15 @@
 import { fetchTranslation } from "@/services/api/openai";
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+
+import { useLanguageContext } from "../contexts/LanguageContext";
 
 export default function CurrentTranslation() {
   const [text, setText] = useState("");
   const [translation, setTranslation] = useState("");
+  const { selectedLanguages } = useLanguageContext();
 
+  console.log(selectedLanguages);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Enter some text:</Text>

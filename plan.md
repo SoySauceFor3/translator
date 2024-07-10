@@ -1,6 +1,6 @@
 # Development Plan
 
-## Parts
+## Parts to implement
 
 - translate module
 - input
@@ -16,6 +16,12 @@
   - languages involved
   - switching keyboard automatically?
 - guidance UI
+
+## Compontents
+
+Current Translation
+Language Selection
+History
 
 ## Tasks
 
@@ -33,5 +39,6 @@
   - submit button, on besides on the return key
   - when empty result, the openai api will return weird result
   - the translation for the last input should be removed when the user is typing a new entry.
+  - when input language is using the same language as the output language, the translation will be in english instead of the output language.
 - translation:
   - too slow, maybe because I am using a vpn?
