@@ -9,8 +9,16 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+
+# local + secrets
 .env
+
+# reference files
 app-example/
+
+# ide config file
+.anima/ # this is a folder for anima
+.vscode
 
 # macOS
 .DS_Store
