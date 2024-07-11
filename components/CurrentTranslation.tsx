@@ -4,7 +4,13 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { useLanguageContext } from "../contexts/LanguageContext";
 
-export default function CurrentTranslation() {
+interface CurrentTranslationProps {
+  addToHistory: (text: string, translations: Map<string, string>) => void;
+}
+
+export default function CurrentTranslation({
+  addToHistory,
+}: CurrentTranslationProps) {
   const [text, setText] = useState("");
   const [translations, setTranslations] = useState<Map<string, string>>(
     new Map()
@@ -30,19 +36,26 @@ export default function CurrentTranslation() {
           setLoading(newLoading);
           setTranslations(new Map());
 
-          selectedLanguages.forEach((language) => {
-            fetchTranslation(text, language).then((translation) => {
-              setTranslations((prevTranslations) => {
-                const newTranslations = new Map(prevTranslations);
+          const newTranslations = new Map();
+          const translationPromises = Array.from(selectedLanguages).map(
+            (language: any) =>
+              fetchTranslation(text, language).then((translation) => {
                 newTranslations.set(language.acronym, translation);
-                return newTranslations;
-              });
-              setLoading((prevLoading) => {
-                const newLoading = new Map(prevLoading);
-                newLoading.set(language.acronym, false);
-                return newLoading;
-              });
-            });
+                setTranslations((prevTranslations) => {
+                  const newTranslations = new Map(prevTranslations);
+                  newTranslations.set(language.acronym, translation);
+                  return newTranslations;
+                });
+                setLoading((prevLoading) => {
+                  const newLoading = new Map(prevLoading);
+                  newLoading.set(language.acronym, false);
+                  return newLoading;
+                });
+              })
+          );
+
+          Promise.all(translationPromises).then(() => {
+            addToHistory(text, newTranslations);
           });
         }}
         returnKeyType="go"
