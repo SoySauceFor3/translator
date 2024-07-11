@@ -17,7 +17,7 @@ web-build/
 app-example/
 
 # ide config file
-.anima/ # this is a folder for anima
+.anima
 .vscode
 
 # macOS
