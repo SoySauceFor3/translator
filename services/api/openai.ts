@@ -1,4 +1,3 @@
-// openai-test.js
 import { Language } from "@/types";
 import OpenAI from "openai";
 
@@ -34,3 +33,34 @@ export const fetchTranslation = async (
   console.log(completion.choices[0]);
   return completion.choices[0].message.content || "";
 };
+
+export async function fetchAudioBase64(text: string): Promise<string> {
+  if (!text) return "";
+
+  try {
+    const mp3 = await openai.audio.speech.create({
+      model: "tts-1",
+      voice: "alloy",
+      input: text,
+    });
+
+    if (!mp3.ok) {
+      throw new Error("Failed to fetch audio");
+    }
+
+    const arrayBuffer = await mp3.arrayBuffer();
+    return arrayBufferToBase64(arrayBuffer);
+  } catch (error) {
+    console.error("Error fetching audio:", error);
+    return "";
+  }
+}
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
