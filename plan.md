@@ -30,6 +30,9 @@ History
 - [x] 3. add language selection. For now I can just just choose the top 10 most used languages in the world.
 - [x] 4. add a history.
 - [x] 5. add audio for input and output in CurrentTranslation.
+- [ ] 6. use icon for audio.
+- [ ] 7. make a fake openai api to reduce test cost :-)
+- [ ]
 
 ## Future
 

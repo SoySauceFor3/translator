@@ -1,13 +1,14 @@
 import { playAudio } from "@/hooks/playAudio"; // Import the playAudio function
 import React from "react";
 import {
-  Button,
   Dimensions,
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 interface TranslationHistoryProps {
   history: {
@@ -31,7 +32,12 @@ export default function TranslationHistory({
           <View style={styles.historyItem}>
             <View style={styles.entryContainer}>
               <Text style={styles.historyText}>Input: {item.text}</Text>
-              <Button title="Audio" onPress={() => playAudio(item.textAudio)} />
+              <TouchableOpacity
+                onPress={() => playAudio(item.textAudio)}
+                style={styles.audioButton}
+              >
+                <Icon name="volume-up" size={20} color="#000" />
+              </TouchableOpacity>
             </View>
             {Array.from(item.translations.entries()).map(
               ([language, translation]) => (
@@ -39,12 +45,14 @@ export default function TranslationHistory({
                   <Text style={styles.historyTranslation}>
                     {language}: {translation}
                   </Text>
-                  <Button
-                    title="Audio"
+                  <TouchableOpacity
                     onPress={() =>
                       playAudio(item.translationAudios.get(language) || "")
                     }
-                  />
+                    style={styles.audioButton}
+                  >
+                    <Icon name="volume-up" size={20} color="#000" />
+                  </TouchableOpacity>
                 </View>
               )
             )}
@@ -85,5 +93,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  audioButton: {
+    padding: 8,
   },
 });

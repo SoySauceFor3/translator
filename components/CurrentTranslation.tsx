@@ -1,7 +1,14 @@
 import { playAudio } from "@/hooks/playAudio";
 import { fetchAudioBase64, fetchTranslation } from "@/services/api/openai";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { useLanguageContext } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
@@ -93,7 +100,12 @@ export default function CurrentTranslation({
         returnKeyType="go"
       />
       {textAudio && (
-        <Button title="Play Input Audio" onPress={() => playAudio(textAudio)} />
+        <TouchableOpacity
+          onPress={() => playAudio(textAudio)}
+          style={styles.audioButton}
+        >
+          <Icon name="volume-up" size={20} color="#000" />
+        </TouchableOpacity>
       )}
       <View style={styles.chartContainer}>
         {Array.from(selectedLanguages).map((language) => (
@@ -104,13 +116,15 @@ export default function CurrentTranslation({
                 ? "...loading..."
                 : translations.get(language.acronym) || "waiting for input"}
             </Text>
-            <Button
-              title="Play Translation Audio"
-              onPress={() => {
-                playAudio(translationAudios.get(language.acronym) || "");
-              }}
+            <TouchableOpacity
+              onPress={() =>
+                playAudio(translationAudios.get(language.acronym) || "")
+              }
               disabled={!translationAudios.get(language.acronym)}
-            />
+              style={styles.audioButton}
+            >
+              <Icon name="volume-up" size={20} color="#000" />
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -155,5 +169,8 @@ const styles = StyleSheet.create({
   chartColumn: {
     flex: 1,
     textAlign: "center",
+  },
+  audioButton: {
+    padding: 8,
   },
 });
