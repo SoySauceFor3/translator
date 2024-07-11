@@ -1,20 +1,29 @@
-import { fetchTranslation } from "@/services/api/openai";
+import { playAudio } from "@/hooks/playAudio";
+import { fetchAudioBase64, fetchTranslation } from "@/services/api/openai";
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useLanguageContext } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
-  addToHistory: (text: string, translations: Map<string, string>) => void;
+  addToHistory: (
+    text: string,
+    translations: Map<string, string>,
+    textAudio: string,
+    translationAudios: Map<string, string>
+  ) => void;
 }
 
 export default function CurrentTranslation({
   addToHistory,
 }: CurrentTranslationProps) {
   const [text, setText] = useState("");
+  const [textAudio, setTextAudio] = useState("");
   const [translations, setTranslations] = useState<Map<string, string>>(
     new Map()
   );
+  const [translationAudios, setTranslationAudios] = useState<
+    Map<string, string>
+  >(new Map());
   const [loading, setLoading] = useState<Map<string, boolean>>(new Map());
   const { selectedLanguages } = useLanguageContext();
 
@@ -29,6 +38,15 @@ export default function CurrentTranslation({
           setText(text);
         }}
         onSubmitEditing={() => {
+          setTextAudio("");
+          setTranslationAudios(new Map());
+
+          let localTextAudio = "";
+          const textAudioPromise = fetchAudioBase64(text).then((audio) => {
+            localTextAudio = audio;
+            setTextAudio(audio);
+          });
+
           const newLoading = new Map();
           selectedLanguages.forEach((language) => {
             newLoading.set(language.acronym, true);
@@ -36,30 +54,47 @@ export default function CurrentTranslation({
           setLoading(newLoading);
           setTranslations(new Map());
 
-          const newTranslations = new Map();
+          const localTranslations = new Map();
+          const localTranslationAudios = new Map();
           const translationPromises = Array.from(selectedLanguages).map(
-            (language: any) =>
+            (language) =>
               fetchTranslation(text, language).then((translation) => {
-                newTranslations.set(language.acronym, translation);
+                localTranslations.set(language.acronym, translation);
                 setTranslations((prevTranslations) => {
-                  const newTranslations = new Map(prevTranslations);
-                  newTranslations.set(language.acronym, translation);
-                  return newTranslations;
+                  return new Map(prevTranslations).set(
+                    language.acronym,
+                    translation
+                  );
+                });
+                fetchAudioBase64(translation).then((audio) => {
+                  localTranslationAudios.set(language.acronym, audio);
+                  setTranslationAudios((prevTranslationsAudio) => {
+                    return new Map(prevTranslationsAudio).set(
+                      language.acronym,
+                      audio
+                    );
+                  });
                 });
                 setLoading((prevLoading) => {
-                  const newLoading = new Map(prevLoading);
-                  newLoading.set(language.acronym, false);
-                  return newLoading;
+                  return new Map(prevLoading).set(language.acronym, false);
                 });
               })
           );
 
-          Promise.all(translationPromises).then(() => {
-            addToHistory(text, newTranslations);
+          Promise.all(translationPromises.concat(textAudioPromise)).then(() => {
+            addToHistory(
+              text,
+              localTranslations,
+              localTextAudio,
+              localTranslationAudios
+            );
           });
         }}
         returnKeyType="go"
       />
+      {textAudio && (
+        <Button title="Play Input Audio" onPress={() => playAudio(textAudio)} />
+      )}
       <View style={styles.chartContainer}>
         {Array.from(selectedLanguages).map((language) => (
           <View key={language.acronym} style={styles.chartRow}>
@@ -69,6 +104,13 @@ export default function CurrentTranslation({
                 ? "...loading..."
                 : translations.get(language.acronym) || "waiting for input"}
             </Text>
+            <Button
+              title="Play Translation Audio"
+              onPress={() => {
+                playAudio(translationAudios.get(language.acronym) || "");
+              }}
+              disabled={!translationAudios.get(language.acronym)}
+            />
           </View>
         ))}
       </View>

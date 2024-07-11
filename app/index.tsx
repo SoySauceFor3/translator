@@ -6,14 +6,26 @@ import React, { useState } from "react";
 
 export default function Index() {
   const [history, setHistory] = useState<
-    { text: string; translations: Map<string, string> }[]
+    {
+      text: string;
+      translations: Map<string, string>;
+      textAudio: string;
+      translationAudios: Map<string, string>;
+    }[]
   >([]);
 
-  const addToHistory = (text: string, translations: Map<string, string>) => {
-    setHistory((prevHistory) => [...prevHistory, { text, translations }]);
+  const addToHistory = (
+    text: string,
+    translations: Map<string, string>,
+    textAudio: string,
+    translationAudios: Map<string, string>
+  ) => {
+    setHistory((prevHistory) => [
+      ...prevHistory,
+      { text, translations, textAudio, translationAudios },
+    ]);
   };
 
-  console.log(history);
   return (
     <LanguageProvider>
       <TranslationHistory history={history} />
