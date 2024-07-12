@@ -1,8 +1,9 @@
 import { Translation } from "@/models/Translation";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import { useLanguageContext } from "../contexts/LanguageContext";
 import { useTranslation } from "../hooks/useTranslation";
+import AudioRecorder from "./AudioRecorder";
 import TranslationItem from "./TranslationItem";
 
 interface CurrentTranslationProps {
@@ -19,7 +20,7 @@ export default function CurrentTranslation({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter some text:</Text>
+      <AudioRecorder />
       <TextInput
         style={styles.input}
         value={inputText}

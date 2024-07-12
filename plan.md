@@ -34,7 +34,9 @@ History
 - [x] 7. make a fake openai api to reduce test cost :-)
 - [x] 8. Clean up the existing components and extract the common part.
 - [ ] 9. experiment speech to text.
-- [ ] 10. move language selection to current translation component.
+  - [x] recording
+  - [ ] speech to text
+- [x] 10. merge language selection and current translation component.
 
 ## Future
 
@@ -51,5 +53,7 @@ History
   - seems that the "Promise.all" to send history to other components is not work as expected. It should wait for ALL async processes. However, it seems to resolve before, for example, the audio to be ready (so during this period, the audio button in the CurrentTranslation is disabled, but the history is updated, and the audio button for the corresponding entry does not play any sound).
 - audio
   - wrong language used (always english) when reading numbers.
+- TranslationHistory:
+  - the order of the history is not messed up.
 - translation:
   - too slow, maybe because I am using a vpn?
