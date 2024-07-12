@@ -10,15 +10,13 @@ export const useTranslation = (
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
   );
-  const [loading, setLoading] = useState<Map<string, boolean>>(new Map());
+  const [loading, setLoading] = useState<Map<Language, boolean>>(new Map());
 
   const handleTranslateRequest = useCallback(
     async (text: string) => {
       const localTranslation = new Translation({ text: text, TTS: "" });
 
-      setLoading(
-        new Map(selectedLanguages.map((lang) => [lang.acronym, true]))
-      );
+      setLoading(new Map(selectedLanguages.map((lang) => [lang, true])));
 
       const inputTTSPromise = fetchAudioBase64(text).then((audio) => {
         localTranslation.input.TTS = audio;
@@ -40,7 +38,7 @@ export const useTranslation = (
             new Map(localTranslation.translations)
           )
         );
-        setLoading((prev) => new Map(prev).set(language.acronym, false));
+        setLoading((prev) => new Map(prev).set(language, false));
       });
 
       await Promise.all([inputTTSPromise, ...translationPromises]);
