@@ -1,4 +1,4 @@
-import { playAudio } from "@/hooks/playAudio";
+import { useAudio } from "@/hooks/useAudio";
 import { Translation } from "@/models/Translation";
 import React, { useState } from "react";
 import {
@@ -27,6 +27,7 @@ export default function CurrentTranslation({
     loading,
     handleTranslation: handleTranslateRequest,
   } = useTranslation(Array.from(selectedLanguages), addToHistory);
+  const { playAudio } = useAudio();
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import { playAudio } from "@/hooks/playAudio";
+import { useAudio } from "@/hooks/useAudio";
 import { Translation } from "@/models/Translation";
 import React from "react";
 import {
@@ -18,6 +18,7 @@ interface TranslationHistoryProps {
 export default function TranslationHistory({
   history,
 }: TranslationHistoryProps) {
+  const { playAudio } = useAudio();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Translation History</Text>

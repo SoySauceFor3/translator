@@ -1,10 +1,18 @@
 import { Audio } from "expo-av";
 
+export function useAudio(): {
+  playAudio: (base64Audio: string) => Promise<void>;
+} {
+  return {
+    playAudio,
+  };
+}
+
 /**
  * Plays an audio file from a base64 encoded string.
  * @param base64Audio - The base64 encoded audio string.
  */
-export async function playAudio(base64Audio: string): Promise<void> {
+async function playAudio(base64Audio: string): Promise<void> {
   if (!base64Audio) return;
 
   try {
