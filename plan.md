@@ -34,6 +34,7 @@ History
 - [x] 7. make a fake openai api to reduce test cost :-)
 - [ ] 8. Clean up the existing components and extract the common part.
 - [ ] 9. experiment speech to text.
+- [ ] 10. move language selection to current translation component.
 
 ## Future
 

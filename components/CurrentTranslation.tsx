@@ -13,9 +13,9 @@ import { useLanguageContext } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
   addToHistory: (
-    text: string,
+    input: string,
     translations: Map<string, string>,
-    textAudio: string,
+    inputAudio: string,
     translationAudios: Map<string, string>
   ) => void;
 }
@@ -23,8 +23,8 @@ interface CurrentTranslationProps {
 export default function CurrentTranslation({
   addToHistory,
 }: CurrentTranslationProps) {
-  const [text, setText] = useState("");
-  const [textAudio, setTextAudio] = useState("");
+  const [input, setInput] = useState("");
+  const [inputTTS, setInputTTS] = useState("");
   const [translations, setTranslations] = useState<Map<string, string>>(
     new Map()
   );
@@ -39,18 +39,18 @@ export default function CurrentTranslation({
       <Text style={styles.label}>Enter some text:</Text>
       <TextInput
         style={styles.input}
-        value={text}
+        value={input}
         onChangeText={(text: React.SetStateAction<string>) => {
-          setText(text);
+          setInput(text);
         }}
         onSubmitEditing={() => {
-          setTextAudio("");
+          setInputTTS("");
           setTranslationAudios(new Map());
 
-          let localTextAudio = "";
-          const textAudioPromise = fetchAudioBase64(text).then((audio) => {
-            localTextAudio = audio;
-            setTextAudio(audio);
+          let localInputTTS = "";
+          const inputTTSPromise = fetchAudioBase64(input).then((audio) => {
+            localInputTTS = audio;
+            setInputTTS(audio);
           });
 
           const newLoading = new Map();
@@ -64,7 +64,7 @@ export default function CurrentTranslation({
           const localTranslationAudios = new Map();
           const translationPromises = Array.from(selectedLanguages).map(
             (language) =>
-              fetchTranslation(text, language).then((translation) => {
+              fetchTranslation(input, language).then((translation) => {
                 localTranslations.set(language.acronym, translation);
                 setTranslations((prevTranslations) => {
                   return new Map(prevTranslations).set(
@@ -87,20 +87,20 @@ export default function CurrentTranslation({
               })
           );
 
-          Promise.all(translationPromises.concat(textAudioPromise)).then(() => {
+          Promise.all(translationPromises.concat(inputTTSPromise)).then(() => {
             addToHistory(
-              text,
+              input,
               localTranslations,
-              localTextAudio,
+              localInputTTS,
               localTranslationAudios
             );
           });
         }}
         returnKeyType="go"
       />
-      {textAudio && (
+      {inputTTS && (
         <TouchableOpacity
-          onPress={() => playAudio(textAudio)}
+          onPress={() => playAudio(inputTTS)}
           style={styles.audioButton}
         >
           <Icon name="volume-up" size={20} color="#000" />
