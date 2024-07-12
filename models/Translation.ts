@@ -1,4 +1,4 @@
-import { Language } from "@/types";
+import { Language } from "@/models/Language";
 
 export interface Piece {
   text: string;

@@ -1,5 +1,5 @@
+import type { Language } from "@/models/Language";
 import React, { ReactNode, createContext, useContext, useState } from "react";
-import type { Language } from "../types";
 
 interface LanguageContextType {
   selectedLanguages: Set<Language>;

@@ -1,6 +1,6 @@
+import { Language } from "@/models/Language";
 import { Translation } from "@/models/Translation";
 import { fetchAudioBase64, fetchTranslation } from "@/services/api/openai";
-import { Language } from "@/types";
 import { useCallback, useState } from "react";
 
 export const useTranslation = (
