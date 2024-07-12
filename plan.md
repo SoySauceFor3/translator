@@ -30,9 +30,10 @@ History
 - [x] 3. add language selection. For now I can just just choose the top 10 most used languages in the world.
 - [x] 4. add a history.
 - [x] 5. add audio for input and output in CurrentTranslation.
-- [ ] 6. use icon for audio.
-- [ ] 7. make a fake openai api to reduce test cost :-)
-- [ ]
+- [x] 6. use icon for audio.
+- [x] 7. make a fake openai api to reduce test cost :-)
+- [ ] 8. Clean up the existing components and extract the common part.
+- [ ] 9. experiment speech to text.
 
 ## Future
 
@@ -47,5 +48,7 @@ History
   - [x] when input language is using the same language as the output language, the translation will be in english instead of the output language.
   - it does not translate everything when the language is mixed. "hello 呀 我的 paper 今天 due" translates to "你好呀 我的 paper 今天 due“ instead of "你好呀 我的论文今天截止"
   - seems that the "Promise.all" to send history to other components is not work as expected. It should wait for ALL async processes. However, it seems to resolve before, for example, the audio to be ready (so during this period, the audio button in the CurrentTranslation is disabled, but the history is updated, and the audio button for the corresponding entry does not play any sound).
+- audio
+  - wrong language used (always english) when reading numbers.
 - translation:
   - too slow, maybe because I am using a vpn?

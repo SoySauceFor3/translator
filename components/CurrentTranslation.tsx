@@ -1,5 +1,5 @@
 import { playAudio } from "@/hooks/playAudio";
-import { fetchAudioBase64, fetchTranslation } from "@/services/api/openai";
+import { fetchAudioBase64, fetchTranslation } from "@/services/fakeApi";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -39,7 +39,6 @@ export default function CurrentTranslation({
       <Text style={styles.label}>Enter some text:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Type here..."
         value={text}
         onChangeText={(text: React.SetStateAction<string>) => {
           setText(text);
