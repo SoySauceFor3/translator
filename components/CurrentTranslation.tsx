@@ -56,7 +56,7 @@ export default function CurrentTranslation({
           <View key={language.acronym} style={styles.chartRow}>
             <Text style={styles.chartColumn}>{language.acronym}</Text>
             <Text style={styles.chartColumn}>
-              {loading.get(language.acronym)
+              {loading.get(language)
                 ? "...loading..."
                 : translation.translations.get(language)?.text ||
                   "waiting for input"}
