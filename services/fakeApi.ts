@@ -11,7 +11,7 @@ export const fetchTranslation = async (
   sentence: string,
   outputLanguage: Language
 ): Promise<string> => {
-  return "fake translation";
+  return `fake translation for: ${sentence} to ${outputLanguage.name}`;
 };
 
 export async function fetchAudioBase64(base64Audio: string): Promise<string> {
