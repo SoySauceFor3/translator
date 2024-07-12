@@ -1,5 +1,5 @@
 import { Translation } from "@/models/Translation";
-import { fetchAudioBase64, fetchTranslation } from "@/services/fakeApi";
+import { fetchAudioBase64, fetchTranslation } from "@/services/api/openai";
 import { Language } from "@/types";
 import { useCallback, useState } from "react";
 
@@ -10,13 +10,9 @@ export const useTranslation = (
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
   );
-  const [loading, setLoading] = useState<Map<Language, boolean>>(new Map());
-
   const handleTranslateRequest = useCallback(
     async (text: string) => {
       const localTranslation = new Translation({ text: text, TTS: "" });
-
-      setLoading(new Map(selectedLanguages.map((lang) => [lang, true])));
 
       const inputTTSPromise = fetchAudioBase64(text).then((audio) => {
         localTranslation.input.TTS = audio;
@@ -38,7 +34,6 @@ export const useTranslation = (
             new Map(localTranslation.translations)
           )
         );
-        setLoading((prev) => new Map(prev).set(language, false));
       });
 
       await Promise.all([inputTTSPromise, ...translationPromises]);
@@ -47,5 +42,5 @@ export const useTranslation = (
     [selectedLanguages, addToHistory]
   );
 
-  return { translation, loading, handleTranslation: handleTranslateRequest };
+  return { translation, handleTranslation: handleTranslateRequest };
 };

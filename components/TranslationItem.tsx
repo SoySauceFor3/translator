@@ -15,6 +15,7 @@ interface TranslationItemProps {
 
 export default function TranslationItem({ item }: TranslationItemProps) {
   const { playAudio } = useAudio();
+
   return (
     <View style={styles.translation}>
       <View style={styles.entryContainer}>

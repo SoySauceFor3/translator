@@ -1,17 +1,9 @@
-import { useAudio } from "@/hooks/useAudio";
 import { Translation } from "@/models/Translation";
 import React, { useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useLanguageContext } from "../contexts/LanguageContext";
 import { useTranslation } from "../hooks/useTranslation";
+import TranslationItem from "./TranslationItem";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
@@ -22,12 +14,8 @@ export default function CurrentTranslation({
 }: CurrentTranslationProps) {
   const [inputText, setInputText] = useState("");
   const { selectedLanguages } = useLanguageContext();
-  const {
-    translation,
-    loading,
-    handleTranslation: handleTranslateRequest,
-  } = useTranslation(Array.from(selectedLanguages), addToHistory);
-  const { playAudio } = useAudio();
+  const { translation, handleTranslation: handleTranslateRequest } =
+    useTranslation(Array.from(selectedLanguages), addToHistory);
 
   return (
     <View style={styles.container}>
@@ -43,40 +31,10 @@ export default function CurrentTranslation({
         title="Translate"
         onPress={() => handleTranslateRequest(inputText)}
       />
-      {translation.input.TTS && (
-        <TouchableOpacity
-          onPress={() => playAudio(translation.input.TTS)}
-          style={styles.audioButton}
-        >
-          <Icon name="volume-up" size={20} color="#000" />
-        </TouchableOpacity>
-      )}
-      <View style={styles.chartContainer}>
-        {Array.from(selectedLanguages).map((language) => (
-          <View key={language.acronym} style={styles.chartRow}>
-            <Text style={styles.chartColumn}>{language.acronym}</Text>
-            <Text style={styles.chartColumn}>
-              {loading.get(language)
-                ? "...loading..."
-                : translation.translations.get(language)?.text ||
-                  "waiting for input"}
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                playAudio(translation.translations.get(language)?.TTS || "")
-              }
-              disabled={!translation.translations.get(language)?.TTS}
-              style={styles.audioButton}
-            >
-              <Icon name="volume-up" size={20} color="#000" />
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
+      <TranslationItem item={translation} />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,23 +53,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: "80%",
     marginBottom: 16,
-  },
-  chartContainer: {
-    width: "100%",
-    marginTop: 16,
-  },
-  chartRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "gray",
-  },
-  chartColumn: {
-    flex: 1,
-    textAlign: "center",
-  },
-  audioButton: {
-    padding: 8,
   },
 });
