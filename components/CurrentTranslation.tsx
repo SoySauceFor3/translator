@@ -1,8 +1,8 @@
 import { playAudio } from "@/hooks/playAudio";
 import { Translation } from "@/models/Translation";
-import { fetchAudioBase64, fetchTranslation } from "@/services/fakeApi";
 import React, { useState } from "react";
 import {
+  Button,
   StyleSheet,
   Text,
   TextInput,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useLanguageContext } from "../contexts/LanguageContext";
+import { useTranslation } from "../hooks/useTranslation";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
@@ -19,69 +20,27 @@ interface CurrentTranslationProps {
 export default function CurrentTranslation({
   addToHistory,
 }: CurrentTranslationProps) {
-  const [translation, setTranslation] = useState<Translation>(
-    new Translation()
-  );
-  let localTranslation = new Translation();
-
-  const [loading, setLoading] = useState<Map<string, boolean>>(new Map());
+  const [inputText, setInputText] = useState("");
   const { selectedLanguages } = useLanguageContext();
+  const {
+    translation,
+    loading,
+    handleTranslation: handleTranslateRequest,
+  } = useTranslation(Array.from(selectedLanguages), addToHistory);
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Enter some text:</Text>
       <TextInput
         style={styles.input}
-        value={translation.input.text}
-        onChangeText={(text: string) => {
-          // input.text
-          localTranslation = new Translation();
-          localTranslation.input.text = text;
-          setTranslation(localTranslation);
-        }}
-        onSubmitEditing={() => {
-          // input.text
-          localTranslation = new Translation();
-          localTranslation.input.text = translation.input.text;
-
-          // input.TTS
-          const inputTTSPromise = fetchAudioBase64(translation.input.text).then(
-            (audio) => {
-              localTranslation.input.TTS = audio;
-              setTranslation(localTranslation);
-            }
-          );
-
-          const newLoading = new Map();
-          selectedLanguages.forEach((language) => {
-            newLoading.set(language.acronym, true);
-          });
-          setLoading(newLoading);
-
-          // translations
-          const translationPromises = Array.from(selectedLanguages).map(
-            (language) =>
-              fetchTranslation(translation.input.text, language).then(
-                (translation) => {
-                  fetchAudioBase64(translation).then((audio) => {
-                    localTranslation.translations.set(language, {
-                      text: translation,
-                      TTS: audio,
-                    });
-                    setTranslation(localTranslation);
-                  });
-                  setLoading((prevLoading) => {
-                    return new Map(prevLoading).set(language.acronym, false);
-                  });
-                }
-              )
-          );
-
-          Promise.all(translationPromises.concat(inputTTSPromise)).then(() => {
-            addToHistory(localTranslation);
-          });
-        }}
+        value={inputText}
+        onChangeText={(text: string) => setInputText(text)}
+        onSubmitEditing={() => handleTranslateRequest(inputText)}
         returnKeyType="go"
+      />
+      <Button
+        title="Translate"
+        onPress={() => handleTranslateRequest(inputText)}
       />
       {translation.input.TTS && (
         <TouchableOpacity
@@ -135,10 +94,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: "80%",
     marginBottom: 16,
-  },
-  output: {
-    fontSize: 18,
-    marginTop: 16,
   },
   chartContainer: {
     width: "100%",
