@@ -1,11 +1,6 @@
 import birdSound from "@/assets/bird-sound.mp3";
 import { Language } from "@/types";
 import { Audio } from "expo-av";
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY,
-});
 
 export const fetchTranslation = async (
   sentence: string,
