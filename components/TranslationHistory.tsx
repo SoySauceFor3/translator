@@ -1,4 +1,5 @@
-import { playAudio } from "@/hooks/playAudio"; // Import the playAudio function
+import { playAudio } from "@/hooks/playAudio";
+import { Translation } from "@/models/Translation";
 import React from "react";
 import {
   Dimensions,
@@ -11,12 +12,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 
 interface TranslationHistoryProps {
-  history: {
-    text: string;
-    translations: Map<string, string>;
-    textAudio: string;
-    translationAudios: Map<string, string>;
-  }[];
+  history: Translation[];
 }
 
 export default function TranslationHistory({
@@ -31,9 +27,9 @@ export default function TranslationHistory({
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
             <View style={styles.entryContainer}>
-              <Text style={styles.historyText}>Input: {item.text}</Text>
+              <Text style={styles.historyText}>Input: {item.input.text}</Text>
               <TouchableOpacity
-                onPress={() => playAudio(item.textAudio)}
+                onPress={() => playAudio(item.input.TTS)}
                 style={styles.audioButton}
               >
                 <Icon name="volume-up" size={20} color="#000" />
@@ -41,14 +37,12 @@ export default function TranslationHistory({
             </View>
             {Array.from(item.translations.entries()).map(
               ([language, translation]) => (
-                <View key={language} style={styles.entryContainer}>
+                <View key={language.acronym} style={styles.entryContainer}>
                   <Text style={styles.historyTranslation}>
-                    {language}: {translation}
+                    {language.acronym}: {translation.text}
                   </Text>
                   <TouchableOpacity
-                    onPress={() =>
-                      playAudio(item.translationAudios.get(language) || "")
-                    }
+                    onPress={() => playAudio(translation.TTS)}
                     style={styles.audioButton}
                   >
                     <Icon name="volume-up" size={20} color="#000" />

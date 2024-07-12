@@ -1,4 +1,5 @@
 import { playAudio } from "@/hooks/playAudio";
+import { Translation } from "@/models/Translation";
 import { fetchAudioBase64, fetchTranslation } from "@/services/fakeApi";
 import React, { useState } from "react";
 import {
@@ -12,25 +13,17 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useLanguageContext } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
-  addToHistory: (
-    input: string,
-    translations: Map<string, string>,
-    inputAudio: string,
-    translationAudios: Map<string, string>
-  ) => void;
+  addToHistory: (translation: Translation) => void;
 }
 
 export default function CurrentTranslation({
   addToHistory,
 }: CurrentTranslationProps) {
-  const [input, setInput] = useState("");
-  const [inputTTS, setInputTTS] = useState("");
-  const [translations, setTranslations] = useState<Map<string, string>>(
-    new Map()
+  const [translation, setTranslation] = useState<Translation>(
+    new Translation()
   );
-  const [translationAudios, setTranslationAudios] = useState<
-    Map<string, string>
-  >(new Map());
+  let localTranslation = new Translation();
+
   const [loading, setLoading] = useState<Map<string, boolean>>(new Map());
   const { selectedLanguages } = useLanguageContext();
 
@@ -39,68 +32,60 @@ export default function CurrentTranslation({
       <Text style={styles.label}>Enter some text:</Text>
       <TextInput
         style={styles.input}
-        value={input}
-        onChangeText={(text: React.SetStateAction<string>) => {
-          setInput(text);
+        value={translation.input.text}
+        onChangeText={(text: string) => {
+          // input.text
+          localTranslation = new Translation();
+          localTranslation.input.text = text;
+          setTranslation(localTranslation);
         }}
         onSubmitEditing={() => {
-          setInputTTS("");
-          setTranslationAudios(new Map());
+          // input.text
+          localTranslation = new Translation();
+          localTranslation.input.text = translation.input.text;
 
-          let localInputTTS = "";
-          const inputTTSPromise = fetchAudioBase64(input).then((audio) => {
-            localInputTTS = audio;
-            setInputTTS(audio);
-          });
+          // input.TTS
+          const inputTTSPromise = fetchAudioBase64(translation.input.text).then(
+            (audio) => {
+              localTranslation.input.TTS = audio;
+              setTranslation(localTranslation);
+            }
+          );
 
           const newLoading = new Map();
           selectedLanguages.forEach((language) => {
             newLoading.set(language.acronym, true);
           });
           setLoading(newLoading);
-          setTranslations(new Map());
 
-          const localTranslations = new Map();
-          const localTranslationAudios = new Map();
+          // translations
           const translationPromises = Array.from(selectedLanguages).map(
             (language) =>
-              fetchTranslation(input, language).then((translation) => {
-                localTranslations.set(language.acronym, translation);
-                setTranslations((prevTranslations) => {
-                  return new Map(prevTranslations).set(
-                    language.acronym,
-                    translation
-                  );
-                });
-                fetchAudioBase64(translation).then((audio) => {
-                  localTranslationAudios.set(language.acronym, audio);
-                  setTranslationAudios((prevTranslationsAudio) => {
-                    return new Map(prevTranslationsAudio).set(
-                      language.acronym,
-                      audio
-                    );
+              fetchTranslation(translation.input.text, language).then(
+                (translation) => {
+                  fetchAudioBase64(translation).then((audio) => {
+                    localTranslation.translations.set(language, {
+                      text: translation,
+                      TTS: audio,
+                    });
+                    setTranslation(localTranslation);
                   });
-                });
-                setLoading((prevLoading) => {
-                  return new Map(prevLoading).set(language.acronym, false);
-                });
-              })
+                  setLoading((prevLoading) => {
+                    return new Map(prevLoading).set(language.acronym, false);
+                  });
+                }
+              )
           );
 
           Promise.all(translationPromises.concat(inputTTSPromise)).then(() => {
-            addToHistory(
-              input,
-              localTranslations,
-              localInputTTS,
-              localTranslationAudios
-            );
+            addToHistory(localTranslation);
           });
         }}
         returnKeyType="go"
       />
-      {inputTTS && (
+      {translation.input.TTS && (
         <TouchableOpacity
-          onPress={() => playAudio(inputTTS)}
+          onPress={() => playAudio(translation.input.TTS)}
           style={styles.audioButton}
         >
           <Icon name="volume-up" size={20} color="#000" />
@@ -113,13 +98,14 @@ export default function CurrentTranslation({
             <Text style={styles.chartColumn}>
               {loading.get(language.acronym)
                 ? "...loading..."
-                : translations.get(language.acronym) || "waiting for input"}
+                : translation.translations.get(language)?.text ||
+                  "waiting for input"}
             </Text>
             <TouchableOpacity
               onPress={() =>
-                playAudio(translationAudios.get(language.acronym) || "")
+                playAudio(translation.translations.get(language)?.TTS || "")
               }
-              disabled={!translationAudios.get(language.acronym)}
+              disabled={!translation.translations.get(language)?.TTS}
               style={styles.audioButton}
             >
               <Icon name="volume-up" size={20} color="#000" />
