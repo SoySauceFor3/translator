@@ -1,4 +1,4 @@
-import { Language } from "@/models/Language";
+import { Language } from "@/app/models/Language";
 import OpenAI from "openai";
 
 const openai = new OpenAI({

@@ -1,13 +1,13 @@
-import { Language } from "@/models/Language";
-import { Translation } from "@/models/Translation";
+import { Language } from "@/app/models/Language";
+import { Translation } from "@/app/models/Translation";
 import { useCallback, useState } from "react";
 
 // Determine which API to use
 const useFakeApi = process.env.EXPO_PUBLIC_USE_FAKE_API === "true";
 
 const { fetchAudioBase64, fetchTranslation } = useFakeApi
-  ? require("@/services/fakeApi")
-  : require("@/services/api/openai");
+  ? require("@/app/services/fakeApi")
+  : require("@/app/services/api/openai");
 
 export const useTranslation = (
   selectedLanguages: Language[],

@@ -1,7 +1,7 @@
-import TranslationHistory from "@/components/TranslationHistory";
-import TranslationWindow from "@/components/TranslationWindow";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { Translation } from "@/models/Translation";
+import TranslationHistory from "@/app/components/TranslationHistory";
+import TranslationWindow from "@/app/components/TranslationWindow";
+import { LanguageProvider } from "@/app/contexts/LanguageContext";
+import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
 
 export default function Index() {

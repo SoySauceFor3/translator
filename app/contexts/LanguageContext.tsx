@@ -1,4 +1,4 @@
-import type { Language } from "@/models/Language";
+import type { Language } from "@/app/models/Language";
 import React, { ReactNode, createContext, useContext, useState } from "react";
 
 interface LanguageContextType {

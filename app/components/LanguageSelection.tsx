@@ -1,6 +1,6 @@
+import { useLanguageContext } from "@/app/contexts/LanguageContext";
+import { Language } from "@/app/models/Language";
 import languages from "@/assets/languages.json";
-import { useLanguageContext } from "@/contexts/LanguageContext";
-import { Language } from "@/models/Language";
 import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 

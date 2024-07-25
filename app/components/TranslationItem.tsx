@@ -1,5 +1,5 @@
-import { useAudio } from "@/hooks/useAudio";
-import { Translation } from "@/models/Translation";
+import { useAudio } from "@/app/hooks/useAudio";
+import { Translation } from "@/app/models/Translation";
 import {
   Dimensions,
   StyleSheet,

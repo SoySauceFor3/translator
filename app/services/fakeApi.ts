@@ -1,5 +1,5 @@
+import { Language } from "@/app/models/Language";
 import birdSound from "@/assets/bird-sound.mp3";
-import { Language } from "@/models/Language";
 import { Audio } from "expo-av";
 
 export const fetchTranslation = async (

@@ -1,6 +1,6 @@
-import CurrentTranslation from "@/components/CurrentTranslation";
-import LanguageSelection from "@/components/LanguageSelection";
-import { Translation } from "@/models/Translation"; // Updated import
+import CurrentTranslation from "@/app/components/CurrentTranslation";
+import LanguageSelection from "@/app/components/LanguageSelection";
+import { Translation } from "@/app/models/Translation"; // Updated import
 import React from "react";
 
 import { Dimensions, StyleSheet, View } from "react-native";

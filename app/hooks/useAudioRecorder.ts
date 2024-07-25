@@ -1,4 +1,4 @@
-import { fetchSpeechToText } from "@/services/api/openai";
+import { fetchSpeechToText } from "@/app/services/api/openai";
 import { Audio } from "expo-av";
 import { useState } from "react";
 

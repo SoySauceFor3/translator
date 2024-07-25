@@ -1,5 +1,5 @@
-import TranslationItem from "@/components/TranslationItem";
-import { Translation } from "@/models/Translation";
+import TranslationItem from "@/app/components/TranslationItem";
+import { Translation } from "@/app/models/Translation";
 import React from "react";
 import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 

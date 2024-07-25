@@ -1,4 +1,4 @@
-import { Translation } from "@/models/Translation";
+import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import { useLanguageContext } from "../contexts/LanguageContext";
