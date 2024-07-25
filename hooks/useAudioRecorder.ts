@@ -1,3 +1,4 @@
+import { fetchSpeechToText } from "@/services/api/openai";
 import { Audio } from "expo-av";
 import { useState } from "react";
 
@@ -48,19 +49,30 @@ export const useAudioRecorder = () => {
   };
 
   const stopRecording = async () => {
-    try {
-      if (!recording) return;
+    if (!recording) return;
 
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-      setRecordingUri(uri);
-      setRecording(null);
-      setIsRecording(false);
-      console.log("Recording stopped.");
-      console.log("Recording URI:", uri);
-    } catch (err) {
-      console.error("Failed to stop recording", err);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    setRecordingUri(uri);
+    setRecording(null);
+    setIsRecording(false);
+    console.log("Recording stopped.");
+    console.log("Recording URI:", uri);
+
+    if (uri) {
+      const sound = new Audio.Sound();
+      try {
+        await sound.loadAsync({ uri });
+        await sound.playAsync();
+        console.log("Playing recorded audio.");
+      } catch (error) {
+        console.error("Error playing recorded audio:", error);
+      }
     }
+
+    // Transcribe the recording.
+    const transcription = await fetchSpeechToText(uri ?? "");
+    console.log("Transcription:", transcription);
   };
 
   return {
