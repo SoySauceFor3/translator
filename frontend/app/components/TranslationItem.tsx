@@ -28,18 +28,37 @@ export default function TranslationItem({ item }: TranslationItemProps) {
         </TouchableOpacity>
       </View>
       {Array.from(item.translations.entries()).map(
-        ([language, translation]) => (
-          <View key={language.acronym} style={styles.entryContainer}>
-            <Text style={styles.translationText}>
-              {language.acronym}: {translation.text}
-            </Text>
-            <TouchableOpacity
-              onPress={() => playAudio(translation.TTS)}
-              style={styles.audioButton}
+        ([toLang, translation], toIndex) => (
+          <>
+            <View
+              key={`${toLang.name}-${toIndex}`}
+              style={styles.entryContainer}
             >
-              <Icon name="volume-up" style={styles.icon} />
-            </TouchableOpacity>
-          </View>
+              <Text style={styles.translationText}>
+                {toLang.acronym}: {translation.text}
+              </Text>
+              <TouchableOpacity
+                onPress={() => playAudio(translation.TTS)}
+                style={styles.audioButton}
+              >
+                <Icon name="volume-up" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+            {translation.confirmations && (
+              <View style={styles.confirmationsContainer}>
+                {Array.from(translation.confirmations.entries()).map(
+                  ([fromLang, confirmation], fromIndex) => (
+                    <Text
+                      key={`${toLang.name}-${toIndex}-${fromLang.name}-${fromIndex}`}
+                      style={styles.confirmationText}
+                    >
+                      {fromLang.acronym}: {confirmation}
+                    </Text>
+                  )
+                )}
+              </View>
+            )}
+          </>
         )
       )}
     </View>
@@ -78,5 +97,14 @@ const styles = StyleSheet.create({
   translationText: {
     fontSize: 14,
     marginLeft: 8,
+  },
+  confirmationsContainer: {
+    marginTop: 8,
+    paddingLeft: 16,
+  },
+  confirmationText: {
+    fontSize: 12,
+    color: "gray",
+    marginBottom: 4,
   },
 });

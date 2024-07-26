@@ -3,6 +3,7 @@ import { Language } from "@/app/models/Language";
 export interface Piece {
   text: string;
   TTS: string;
+  confirmations?: Map<Language, string>;
 }
 
 export class Translation {

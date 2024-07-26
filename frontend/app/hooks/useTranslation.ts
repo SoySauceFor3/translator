@@ -10,7 +10,8 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
   : require("@/app/services/api/openai");
 
 export const useTranslation = (
-  selectedLanguages: Language[],
+  toLanguages: Language[],
+  fromLanguages: Language[],
   onFinishTranslation: (translation: Translation) => void
 ) => {
   const [translation, setTranslation] = useState<Translation>(
@@ -18,34 +19,39 @@ export const useTranslation = (
   );
   const handleTranslateRequest = useCallback(
     async (text: string) => {
-      const localTranslation = new Translation({ text: text, TTS: "" });
+      const localTranslation = new Translation({
+        text: text,
+        TTS: "",
+      });
 
       const inputTTSPromise = fetchAudioBase64(text).then((audio: string) => {
         localTranslation.input.TTS = audio;
-        setTranslation(
-          new Translation(localTranslation.input, localTranslation.translations)
-        );
+        setTranslation(localTranslation);
       });
 
-      const translationPromises = selectedLanguages.map(async (language) => {
-        const translatedText = await fetchTranslation(text, language);
+      const translationPromises = toLanguages.map(async (toLang) => {
+        const translatedText = await fetchTranslation(text, toLang);
         const audio = await fetchAudioBase64(translatedText);
-        localTranslation.translations.set(language, {
+        const confirmations = new Map();
+        for (const fromLang of fromLanguages) {
+          const confirmation = await fetchTranslation(translatedText, fromLang);
+          confirmations.set(fromLang, confirmation);
+        }
+        localTranslation.translations.set(toLang, {
           text: translatedText,
           TTS: audio,
+          confirmations: confirmations,
         });
-        setTranslation(
-          new Translation(
-            localTranslation.input,
-            new Map(localTranslation.translations)
-          )
-        );
+        setTranslation(localTranslation);
       });
 
       await Promise.all([inputTTSPromise, ...translationPromises]);
+
+      // Generate confirmations.
+
       onFinishTranslation(localTranslation);
     },
-    [selectedLanguages, onFinishTranslation]
+    [toLanguages, onFinishTranslation]
   );
 
   return { translation, handleTranslateRequest };

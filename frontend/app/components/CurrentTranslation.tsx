@@ -21,6 +21,7 @@ export default function CurrentTranslation({
 
   const { translation, handleTranslateRequest } = useTranslation(
     Array.from(selectedToLanguages),
+    Array.from(selectedFromLanguages),
     addToHistory
   );
 
