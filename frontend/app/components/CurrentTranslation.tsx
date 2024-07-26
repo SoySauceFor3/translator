@@ -1,22 +1,26 @@
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
-import { useLanguageContext } from "../contexts/LanguageContext";
 import { useTranslation } from "../hooks/useTranslation";
+import { Language } from "../models/Language";
 import AudioRecorder from "./AudioRecorder";
 import TranslationItem from "./TranslationItem";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
+  selectedToLanguages: Set<Language>;
+  selectedFromLanguages: Set<Language>;
 }
 
 export default function CurrentTranslation({
   addToHistory,
+  selectedToLanguages,
+  selectedFromLanguages,
 }: CurrentTranslationProps) {
   const [inputText, setInputText] = useState("");
-  const { selectedLanguages } = useLanguageContext();
+
   const { translation, handleTranslation: handleTranslateRequest } =
-    useTranslation(Array.from(selectedLanguages), addToHistory);
+    useTranslation(Array.from(selectedToLanguages), addToHistory);
 
   const handleTranscription = (transcription: string) => {
     setInputText(transcription);

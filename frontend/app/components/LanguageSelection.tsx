@@ -1,12 +1,18 @@
-import { useLanguageContext } from "@/app/contexts/LanguageContext";
 import { Language } from "@/app/models/Language";
 import languages from "@/assets/languages.json";
 import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
-export default function LanguageSelection() {
-  const { selectedLanguages, toggleLanguageSelection } = useLanguageContext();
-
+interface LanguageSelectionProps {
+  selectedLanguages: Set<Language>;
+  toggleLanguageSelection: (language: Language) => void;
+  type: "to" | "from";
+}
+export default function LanguageSelection({
+  selectedLanguages,
+  toggleLanguageSelection,
+  type,
+}: LanguageSelectionProps) {
   return (
     <View>
       <FlatList
@@ -17,7 +23,9 @@ export default function LanguageSelection() {
             style={{
               padding: 10,
               backgroundColor: selectedLanguages.has(item)
-                ? "lightblue"
+                ? type === "to"
+                  ? "lightblue"
+                  : "lightgreen"
                 : "white",
             }}
             onPress={() => toggleLanguageSelection(item)}

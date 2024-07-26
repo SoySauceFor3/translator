@@ -1,10 +1,9 @@
 import CurrentTranslation from "@/app/components/CurrentTranslation";
 import LanguageSelection from "@/app/components/LanguageSelection";
-import { Translation } from "@/app/models/Translation"; // Updated import
+import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
+import { Translation } from "@/app/models/Translation";
 import React from "react";
-
 import { Dimensions, StyleSheet, View } from "react-native";
-import { LanguageProvider } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
@@ -13,15 +12,33 @@ interface CurrentTranslationProps {
 export default function TranslationWindow({
   addToHistory,
 }: CurrentTranslationProps) {
+  const { selectedLanguages: toLanguages, toggleLanguage: toggleToLanguage } =
+    useLanguageSelector();
+  const {
+    selectedLanguages: fromLanguages,
+    toggleLanguage: toggleFromLanguage,
+  } = useLanguageSelector();
   return (
     <View style={styles.translationWindow}>
-      <LanguageProvider>
-        <LanguageSelection />
-        <CurrentTranslation addToHistory={addToHistory} />
-      </LanguageProvider>
+      <LanguageSelection
+        selectedLanguages={fromLanguages}
+        toggleLanguageSelection={toggleFromLanguage}
+        type="from"
+      />
+      <LanguageSelection
+        selectedLanguages={toLanguages}
+        toggleLanguageSelection={toggleToLanguage}
+        type="to"
+      />
+      <CurrentTranslation
+        addToHistory={addToHistory}
+        selectedToLanguages={toLanguages}
+        selectedFromLanguages={fromLanguages}
+      />
     </View>
   );
 }
+
 const windowHeight = Dimensions.get("window").height;
 const translationWindowHeight = (3 / 5) * windowHeight;
 
