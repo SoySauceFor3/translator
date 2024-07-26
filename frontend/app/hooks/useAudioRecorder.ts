@@ -1,4 +1,4 @@
-import { fetchSpeechToText } from "@/app/services/api/openai";
+import { fetchSpeechToText } from "@/app/services/api/myOwnBackend";
 import { Audio } from "expo-av";
 import { useState } from "react";
 
@@ -72,7 +72,7 @@ export const useAudioRecorder = () => {
 
     // Transcribe the recording.
     const transcription = await fetchSpeechToText(uri ?? "");
-    console.log("Transcription:", transcription);
+    console.log("Transcription222222:", transcription);
   };
 
   return {

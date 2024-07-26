@@ -15,6 +15,7 @@ export class TranscriptionService {
   }
 
   async transcribe(file: Express.Multer.File): Promise<string> {
+    console.log('hello! ');
     // Store it locally.
     const uploadDir = path.join(__dirname, '..', '..', 'tmp');
     if (!fs.existsSync(uploadDir)) {
@@ -29,6 +30,7 @@ export class TranscriptionService {
       file: fileStream,
       model: 'whisper-1',
     });
+    console.log('response: ', response.text);
 
     // Delete the file.
     fs.unlink(filePath, (err) => {
