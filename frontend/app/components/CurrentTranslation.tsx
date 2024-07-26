@@ -18,9 +18,13 @@ export default function CurrentTranslation({
   const { translation, handleTranslation: handleTranslateRequest } =
     useTranslation(Array.from(selectedLanguages), addToHistory);
 
+  const handleTranscription = (transcription: string) => {
+    setInputText(transcription);
+  };
+
   return (
     <View style={styles.container}>
-      <AudioRecorder />
+      <AudioRecorder onTranscription={handleTranscription} />
       <TextInput
         style={styles.input}
         value={inputText}

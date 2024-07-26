@@ -18,8 +18,8 @@ async function checkAndRequestPermission() {
 
 export const useAudioRecorder = () => {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [recordingUri, setRecordingUri] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [transcription, setTranscription] = useState<string>("");
 
   const startRecording = async () => {
     // Check and request permission if needed.
@@ -53,7 +53,6 @@ export const useAudioRecorder = () => {
 
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
-    setRecordingUri(uri);
     setRecording(null);
     setIsRecording(false);
     console.log("Recording stopped.");
@@ -73,12 +72,13 @@ export const useAudioRecorder = () => {
     // Transcribe the recording.
     const transcription = await fetchSpeechToText(uri ?? "");
     console.log("Transcription222222:", transcription);
+    setTranscription(transcription);
   };
 
   return {
     isRecording,
     startRecording,
     stopRecording,
-    recordingUri,
+    transcription,
   };
 };

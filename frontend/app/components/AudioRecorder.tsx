@@ -1,11 +1,21 @@
+import { useAudioRecorder } from "@/app/hooks/useAudioRecorder";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
-import { useAudioRecorder } from "../hooks/useAudioRecorder";
 
-export default function AudioRecorder() {
-  const { isRecording, startRecording, stopRecording, recordingUri } =
+interface AudioRecorderProps {
+  onTranscription: (transcription: string) => void;
+}
+
+export default function AudioRecorder({ onTranscription }: AudioRecorderProps) {
+  const { isRecording, startRecording, stopRecording, transcription } =
     useAudioRecorder();
+
+  useEffect(() => {
+    if (transcription) {
+      onTranscription(transcription);
+    }
+  }, [transcription, onTranscription]);
 
   return (
     <View>
