@@ -19,8 +19,10 @@ export default function CurrentTranslation({
 }: CurrentTranslationProps) {
   const [inputText, setInputText] = useState("");
 
-  const { translation, handleTranslation: handleTranslateRequest } =
-    useTranslation(Array.from(selectedToLanguages), addToHistory);
+  const { translation, handleTranslateRequest } = useTranslation(
+    Array.from(selectedToLanguages),
+    addToHistory
+  );
 
   const handleTranscription = (transcription: string) => {
     setInputText(transcription);

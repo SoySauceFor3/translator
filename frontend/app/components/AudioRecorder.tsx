@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 
 interface AudioRecorderProps {
-  onTranscription: (transcription: string) => void;
+  onTranscription: (transcription: string) => void; // Whatever the caller want this component to do.
 }
 
 export default function AudioRecorder({ onTranscription }: AudioRecorderProps) {

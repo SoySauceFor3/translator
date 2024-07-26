@@ -11,7 +11,7 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
 
 export const useTranslation = (
   selectedLanguages: Language[],
-  addToHistory: (translation: Translation) => void
+  onFinishTranslation: (translation: Translation) => void
 ) => {
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
@@ -43,10 +43,10 @@ export const useTranslation = (
       });
 
       await Promise.all([inputTTSPromise, ...translationPromises]);
-      addToHistory(localTranslation);
+      onFinishTranslation(localTranslation);
     },
-    [selectedLanguages, addToHistory]
+    [selectedLanguages, onFinishTranslation]
   );
 
-  return { translation, handleTranslation: handleTranslateRequest };
+  return { translation, handleTranslateRequest };
 };
