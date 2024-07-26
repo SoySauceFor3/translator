@@ -4,6 +4,7 @@ import { Translation } from "@/app/models/Translation"; // Updated import
 import React from "react";
 
 import { Dimensions, StyleSheet, View } from "react-native";
+import { LanguageProvider } from "../contexts/LanguageContext";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
@@ -14,8 +15,10 @@ export default function TranslationWindow({
 }: CurrentTranslationProps) {
   return (
     <View style={styles.translationWindow}>
-      <LanguageSelection />
-      <CurrentTranslation addToHistory={addToHistory} />
+      <LanguageProvider>
+        <LanguageSelection />
+        <CurrentTranslation addToHistory={addToHistory} />
+      </LanguageProvider>
     </View>
   );
 }

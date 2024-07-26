@@ -1,8 +1,8 @@
 import TranslationHistory from "@/app/components/TranslationHistory";
 import TranslationWindow from "@/app/components/TranslationWindow";
-import { LanguageProvider } from "@/app/contexts/LanguageContext";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
+import { View } from "react-native";
 
 export default function Index() {
   const [history, setHistory] = useState<Translation[]>([]);
@@ -12,9 +12,9 @@ export default function Index() {
   };
 
   return (
-    <LanguageProvider>
+    <View>
       <TranslationWindow addToHistory={addToHistory} />
       <TranslationHistory history={history} />
-    </LanguageProvider>
+    </View>
   );
 }
