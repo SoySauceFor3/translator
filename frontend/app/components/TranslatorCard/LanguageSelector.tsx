@@ -1,18 +1,13 @@
 import { Language } from "@/app/models/Language";
-import { Ionicons } from "@expo/vector-icons";
-import { styled } from "nativewind";
 import React, { useState } from "react";
 import {
   FlatList,
   Modal,
-  Text as RNText,
-  TouchableOpacity as RNTouchableOpacity,
-  View as RNView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
-const View = styled(RNView);
-const Text = styled(RNText);
-const TouchableOpacity = styled(RNTouchableOpacity);
 
 interface LanguageSelectorProps {
   availableLanguages: Map<Language, boolean>;
@@ -35,32 +30,26 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   );
 
   return (
-    <View className="flex-row items-center bg-white rounded-full px-2 py-1 space-x-2">
-      <TouchableOpacity
-        className="w-6 h-6 rounded-full bg-green-500 items-center justify-center"
-        onPress={() => {}}
-      >
-        <Ionicons name="checkmark" size={16} color="white" />
-      </TouchableOpacity>
-
-      {selectedLanguages.map(([lang, _], index) => (
+    <View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {selectedLanguages.map(([lang, _], index) => (
+          <TouchableOpacity
+            key={index}
+            className="px-4 py-2 mr-2 bg-primary-light rounded-full"
+            onPress={() => onLanguageToggle(lang)}
+          >
+            <Text className="text-sm font-semibold text-text-primary">
+              {lang.acronym}
+            </Text>
+          </TouchableOpacity>
+        ))}
         <TouchableOpacity
-          key={index}
-          className="w-6 h-6 rounded-full bg-gray-300 items-center justify-center"
-          onPress={() => onLanguageToggle(lang)}
+          className="px-4 py-2 bg-secondary-light rounded-full"
+          onPress={() => setModalVisible(true)}
         >
-          <Text className="text-xs font-bold text-gray-600">
-            {lang.acronym}
-          </Text>
+          <Text className="text-sm font-semibold text-text-secondary">Add</Text>
         </TouchableOpacity>
-      ))}
-
-      <TouchableOpacity
-        className="w-6 h-6 rounded-full bg-gray-200 items-center justify-center"
-        onPress={() => setModalVisible(true)}
-      >
-        <Ionicons name="add" size={16} color="gray" />
-      </TouchableOpacity>
+      </ScrollView>
 
       <Modal
         animationType="slide"
@@ -69,8 +58,10 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         onRequestClose={() => setModalVisible(false)}
       >
         <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
-          <View className="bg-white p-4 rounded-lg w-3/4">
-            <Text className="text-lg font-bold mb-2">Select Languages</Text>
+          <View className="bg-surface p-4 rounded-lg w-3/4">
+            <Text className="text-lg font-bold mb-2 text-text-primary">
+              Select Languages
+            </Text>
             <FlatList
               data={unselectedLanguages}
               renderItem={({ item: [lang, _] }) => (
@@ -81,7 +72,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     setModalVisible(false);
                   }}
                 >
-                  <Text>
+                  <Text className="text-text-secondary">
                     {lang.name} ({lang.acronym})
                   </Text>
                 </TouchableOpacity>
@@ -89,7 +80,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               keyExtractor={(item) => item[0].acronym}
             />
             <TouchableOpacity
-              className="mt-4 bg-blue-500 p-2 rounded"
+              className="mt-4 bg-primary p-2 rounded"
               onPress={() => setModalVisible(false)}
             >
               <Text className="text-white text-center">Close</Text>

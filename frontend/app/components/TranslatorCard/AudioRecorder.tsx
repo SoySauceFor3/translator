@@ -1,7 +1,7 @@
 import { useAudioRecorder } from "@/app/hooks/useAudioRecorder";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 interface AudioRecorderProps {
   onTranscription: (transcription: string) => void; // Whatever the caller want this component to do.
@@ -18,13 +18,13 @@ export default function AudioRecorder({ onTranscription }: AudioRecorderProps) {
   }, [transcription, onTranscription]);
 
   return (
-    <View>
-      <Ionicons
-        name={isRecording ? "stop-circle" : "mic-circle"}
-        size={64}
-        color="red"
-        onPress={isRecording ? stopRecording : startRecording}
-      />
-    </View>
+    <TouchableOpacity
+      className={`w-14 h-14 rounded-full ${
+        isRecording ? "bg-primary" : "bg-accent"
+      } items-center justify-center shadow-md`}
+      onPress={isRecording ? stopRecording : startRecording}
+    >
+      <Ionicons name={isRecording ? "stop" : "mic"} size={28} color="white" />
+    </TouchableOpacity>
   );
 }

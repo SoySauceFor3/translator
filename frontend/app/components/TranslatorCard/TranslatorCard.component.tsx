@@ -4,7 +4,7 @@ import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
 import { useTranslation } from "@/app/hooks/useTranslation";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
-import { Button, Dimensions, StyleSheet, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface TranslatorCardProps {
   addToHistory: (translation: Translation) => void;
@@ -29,51 +29,35 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
   };
 
   return (
-    <View style={styles.translationWindow}>
+    <View className="h-3/5 bg-background p-6 rounded-2xl shadow-lg">
       <LanguageSelector
         availableLanguages={toLanguages}
         onLanguageToggle={handleToLanguageToggle}
         type="to"
       />
-      <View style={styles.inputContainer}>
-        <AudioRecorder onTranscription={handleTranscription} />
+      <View className="mt-6">
         <TextInput
-          style={styles.input}
+          className="w-full h-32 text-lg text-text-primary bg-surface p-4 rounded-xl"
           value={inputText}
           onChangeText={(text: string) => setInputText(text)}
           onSubmitEditing={() => handleTranslateRequest(inputText)}
           returnKeyType="go"
+          placeholder="Enter text to translate"
+          placeholderTextColor="#999"
+          multiline
         />
-        <Button
-          title="Translate"
-          onPress={() => handleTranslateRequest(inputText)}
-        />
+        <View className="mt-6 flex-row justify-between items-center">
+          <AudioRecorder onTranscription={handleTranscription} />
+          <TouchableOpacity
+            className="bg-primary px-8 py-4 rounded-full shadow-md"
+            onPress={() => handleTranslateRequest(inputText)}
+          >
+            <Text className="text-white font-bold text-lg">Translate</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
-
-const windowHeight = Dimensions.get("window").height;
-const translationWindowHeight = (3 / 5) * windowHeight;
-
-const styles = StyleSheet.create({
-  translationWindow: {
-    height: translationWindowHeight,
-  },
-  inputContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 8,
-    width: "80%",
-    marginBottom: 16,
-  },
-});
 
 export default TranslatorCard;
