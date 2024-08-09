@@ -1,25 +1,21 @@
 import type { Language } from "@/app/models/Language";
+import availableLanguages from "@/assets/languages.json";
 import { useState } from "react";
-
 export function useLanguageSelector() {
-  const [selectedLanguages, setSelectedLanguages] = useState<Set<Language>>(
-    new Set()
+  const [languages, setLanguages] = useState<Map<Language, boolean>>(
+    new Map(availableLanguages.map((lang) => [lang, false]))
   );
 
-  const toggleLanguage = (language: Language) => {
-    setSelectedLanguages((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(language)) {
-        newSet.delete(language);
-      } else {
-        newSet.add(language);
-      }
-      return newSet;
+  const handleLanguageToggle = (language: Language) => {
+    setLanguages((prevLanguages) => {
+      const newLanguages = new Map(prevLanguages);
+      newLanguages.set(language, !newLanguages.get(language));
+      return newLanguages;
     });
   };
 
   return {
-    selectedLanguages,
-    toggleLanguage,
+    languages,
+    handleLanguageToggle,
   };
 }

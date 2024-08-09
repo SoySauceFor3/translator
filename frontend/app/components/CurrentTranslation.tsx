@@ -8,20 +8,19 @@ import TranslationItem from "./TranslationItem";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
-  selectedToLanguages: Set<Language>;
-  selectedFromLanguages: Set<Language>;
+  selectedToLanguages: Map<Language, boolean>;
 }
 
 export default function CurrentTranslation({
   addToHistory,
   selectedToLanguages,
-  selectedFromLanguages,
 }: CurrentTranslationProps) {
   const [inputText, setInputText] = useState("");
 
   const { translation, handleTranslateRequest } = useTranslation(
-    Array.from(selectedToLanguages),
-    Array.from(selectedFromLanguages),
+    Array.from(selectedToLanguages)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([lang]) => lang),
     addToHistory
   );
 

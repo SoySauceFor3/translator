@@ -11,9 +11,9 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
 
 export const useTranslation = (
   toLanguages: Language[],
-  fromLanguages: Language[],
   onFinishTranslation: (translation: Translation) => void
 ) => {
+  const fromLanguages: Language[] = new Array<Language>(); //STUB.
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
   );
