@@ -8,9 +8,9 @@ interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;
 }
 
-export default function TranslationWindow({
+const TranslatorCard: React.FC<CurrentTranslationProps> = ({
   addToHistory,
-}: CurrentTranslationProps) {
+}) => {
   const {
     languages: toLanguages,
     handleLanguageToggle: handleToLanguageToggle,
@@ -30,8 +30,8 @@ export default function TranslationWindow({
       />
     </View>
   );
-}
-
+};
+export default TranslatorCard;
 const windowHeight = Dimensions.get("window").height;
 const translationWindowHeight = (3 / 5) * windowHeight;
 

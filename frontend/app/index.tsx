@@ -1,5 +1,5 @@
 import TranslationHistory from "@/app/components/TranslationHistory";
-import TranslationWindow from "@/app/components/TranslatorCard/TranslationWindow";
+import { TranslatorCard } from "@/app/components/TranslatorCard";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -13,7 +13,7 @@ export default function Index() {
 
   return (
     <View>
-      <TranslationWindow addToHistory={addToHistory} />
+      <TranslatorCard addToHistory={addToHistory} />
       <TranslationHistory history={history} />
     </View>
   );
