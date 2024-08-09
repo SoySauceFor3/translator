@@ -1,10 +1,10 @@
+import TranslationItem from "@/app/components/TranslationItem";
+import AudioRecorder from "@/app/components/TranslatorCard/AudioRecorder";
+import { useTranslation } from "@/app/hooks/useTranslation";
+import { Language } from "@/app/models/Language";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
-import { useTranslation } from "../hooks/useTranslation";
-import { Language } from "../models/Language";
-import AudioRecorder from "./AudioRecorder";
-import TranslationItem from "./TranslationItem";
 
 interface CurrentTranslationProps {
   addToHistory: (translation: Translation) => void;

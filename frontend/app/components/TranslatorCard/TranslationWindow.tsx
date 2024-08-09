@@ -1,5 +1,5 @@
-import CurrentTranslation from "@/app/components/CurrentTranslation";
-import LanguageSelector from "@/app/components/LanguageSelector";
+import CurrentTranslation from "@/app/components/TranslatorCard/CurrentTranslation";
+import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
 import { Translation } from "@/app/models/Translation";
 import React from "react";
