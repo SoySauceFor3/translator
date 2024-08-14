@@ -11,9 +11,9 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
 
 export const useTranslation = (
   toLanguages: Language[],
+  confirmLanguages: Language[],
   onFinishTranslation: (translation: Translation) => void
 ) => {
-  const fromLanguages: Language[] = new Array<Language>(); //STUB.
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
   );
@@ -33,9 +33,12 @@ export const useTranslation = (
         const translatedText = await fetchTranslation(text, toLang);
         const audio = await fetchAudioBase64(translatedText);
         const confirmations = new Map();
-        for (const fromLang of fromLanguages) {
-          const confirmation = await fetchTranslation(translatedText, fromLang);
-          confirmations.set(fromLang, confirmation);
+        for (const confirmLang of confirmLanguages) {
+          const confirmation = await fetchTranslation(
+            translatedText,
+            confirmLang
+          );
+          confirmations.set(confirmLang, confirmation);
         }
         localTranslation.translations.set(toLang, {
           text: translatedText,

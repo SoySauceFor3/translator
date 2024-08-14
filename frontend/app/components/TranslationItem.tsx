@@ -1,7 +1,7 @@
 import { useAudio } from "@/app/hooks/useAudio";
 import { Translation } from "@/app/models/Translation";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 interface TranslationItemProps {
@@ -14,6 +14,9 @@ export default function TranslationItem({
   isFocused,
 }: TranslationItemProps) {
   const { playAudio } = useAudio();
+  const [indexToShowConfirmText, setIndexToShowConfirmText] = useState<
+    number | null
+  >(null);
 
   return (
     <View
@@ -41,25 +44,65 @@ export default function TranslationItem({
       {Array.from(item.translations.entries()).map(
         ([toLang, translation], toIndex) => (
           <View key={`${toLang.name}-${toIndex}`} className="mt-3">
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center flex-1 mr-2">
-                <Text className="text-sm font-semibold text-secondary-dark mr-2">
-                  {toLang.acronym}
-                </Text>
+            <View
+              className={`flex-row items-center justify-between ${indexToShowConfirmText === toIndex ? "bg-text-primary rounded-lg" : ""}`}
+            >
+              <View className="flex-row items-center flex-1 mr-2 p-2">
+                <View className="flex-col items-start">
+                  <Text
+                    className={`text-sm font-semibold mr-2 ${indexToShowConfirmText === toIndex ? "text-background" : "text-secondary-dark"}`}
+                  >
+                    {toLang.acronym}
+                  </Text>
+                  <View className="flex-row mt-2">
+                    {isFocused ? (
+                      <Pressable
+                        onPressIn={() => setIndexToShowConfirmText(toIndex)}
+                        onPressOut={() => setIndexToShowConfirmText(null)}
+                        className={`p-2 rounded-full ${indexToShowConfirmText === toIndex ? "bg-background" : "bg-secondary-light"}`}
+                      >
+                        <Icon
+                          name="check"
+                          size={16}
+                          color={
+                            indexToShowConfirmText === toIndex
+                              ? "#3E2723"
+                              : "#3E2723"
+                          }
+                        />
+                      </Pressable>
+                    ) : (
+                      <View className="w-8 " />
+                    )}
+                    {isFocused ? (
+                      <TouchableOpacity
+                        onPress={() => playAudio(translation.TTS)}
+                        className={`p-2 rounded-full ${indexToShowConfirmText === toIndex ? "bg-background" : "bg-secondary-light"}`}
+                      >
+                        <Icon
+                          name="volume-up"
+                          size={16}
+                          color={
+                            indexToShowConfirmText === toIndex
+                              ? "#3E2723"
+                              : "#3E2723"
+                          }
+                        />
+                      </TouchableOpacity>
+                    ) : (
+                      <View className="w-8" />
+                    )}
+                  </View>
+                </View>
                 <Text
-                  className={`${isFocused ? "text-xl" : "text-base"} text-text-secondary flex-1`}
+                  className={`${isFocused ? "text-xl" : "text-base"} ${indexToShowConfirmText === toIndex ? "text-background" : "text-text-secondary"} flex-1`}
                 >
-                  {translation.text}
+                  {indexToShowConfirmText === toIndex &&
+                  translation.confirmations
+                    ? Array.from(translation.confirmations.values())[0]
+                    : translation.text}
                 </Text>
               </View>
-              {isFocused && (
-                <TouchableOpacity
-                  onPress={() => playAudio(translation.TTS)}
-                  className="p-2 bg-secondary-light rounded-full"
-                >
-                  <Icon name="volume-up" size={16} color="#3E2723" />
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         )

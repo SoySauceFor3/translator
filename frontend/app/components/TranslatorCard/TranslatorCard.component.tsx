@@ -17,10 +17,16 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
     handleLanguageToggle: handleToLanguageToggle,
   } = useLanguageSelector(); // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
 
+  const {
+    languages: confirmLanguages,
+    handleLanguageToggle: handleConfirmLanguageToggle,
+  } = useLanguageSelector();
+
   const { handleTranslateRequest } = useTranslation(
     Array.from(toLanguages)
       .filter(([_, isSelected]) => isSelected)
       .map(([lang]) => lang),
+    Array.from(confirmLanguages).map(([lang]) => lang),
     addToHistory
   );
 
@@ -29,7 +35,7 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
   };
 
   return (
-    <View className="h-3/5 bg-background p-6 rounded-2xl shadow-lg">
+    <View className="h-3/7 bg-background p-6 rounded-2xl shadow-lg">
       <LanguageSelector
         availableLanguages={toLanguages}
         onLanguageToggle={handleToLanguageToggle}
