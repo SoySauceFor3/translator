@@ -14,7 +14,7 @@ export default function TranslationHistory({
     <View style={styles.container}>
       <Text style={styles.title}>Translation History</Text>
       <FlatList
-        data={history.reverse()}
+        data={[...history].reverse()}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <TranslationItem item={item} isFocused={false} />
