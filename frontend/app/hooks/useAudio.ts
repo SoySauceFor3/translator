@@ -15,6 +15,7 @@ export function useAudio(): {
 async function playAudio(base64Audio: string): Promise<void> {
   if (!base64Audio) return;
 
+  console.log("Playing audio:", base64Audio);
   try {
     const sound = new Audio.Sound();
     await sound.loadAsync({
