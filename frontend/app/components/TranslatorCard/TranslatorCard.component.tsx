@@ -1,11 +1,11 @@
-import AudioRecorder from "@/app/components/TranslatorCard/AudioRecorder";
+import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslation } from "@/app/hooks/useTranslation";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 interface TranslatorCardProps {
   addToHistory: (translation: Translation) => void;
@@ -43,27 +43,12 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
         onLanguageToggle={handleToLanguageToggle}
         type="to"
       />
-      <View className="mt-6">
-        <TextInput
-          className="w-full h-32 text-lg text-text-primary bg-surface p-4 rounded-xl"
-          value={inputText}
-          onChangeText={(text: string) => setInputText(text)}
-          onSubmitEditing={() => handleTranslateRequest(inputText)}
-          returnKeyType="go"
-          placeholder="Enter text to translate"
-          placeholderTextColor="#999"
-          multiline
-        />
-        <View className="mt-6 flex-row justify-between items-center">
-          <AudioRecorder onTranscription={handleTranscription} />
-          <TouchableOpacity
-            className="bg-primary px-8 py-4 rounded-full shadow-md"
-            onPress={() => handleTranslateRequest(inputText)}
-          >
-            <Text className="text-white font-bold text-lg">Translate</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <InputSection
+        inputText={inputText}
+        setInputText={setInputText}
+        handleTranslateRequest={handleTranslateRequest}
+        handleTranscription={handleTranscription}
+      />
     </View>
   );
 };
