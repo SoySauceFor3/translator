@@ -1,10 +1,11 @@
 import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
-import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslation } from "@/app/hooks/useTranslation";
+import { getLanguageFromCode, Language } from "@/app/models/Language";
 import { Translation } from "@/app/models/Translation";
-import React, { useState } from "react";
+import * as Localization from "expo-localization";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 
 interface TranslatorCardProps {
@@ -19,11 +20,25 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
     languages: toLanguages,
     handleLanguageToggle: handleToLanguageToggle,
   } = useLanguageStorage("toLanguages");
-  const {
-    languages: confirmLanguages,
-    handleLanguageToggle: handleConfirmLanguageToggle,
-  } = useLanguageSelector();
 
+  const [confirmLanguages, setConfirmLanguages] = useState<
+    Map<Language, boolean>
+  >(new Map());
+  useEffect(() => {
+    for (const locale of Localization.getLocales()) {
+      const languageCode = locale.languageCode;
+      if (languageCode !== null) {
+        const language = getLanguageFromCode(languageCode);
+        if (language) {
+          setConfirmLanguages((prevLanguages) =>
+            new Map(prevLanguages).set(language, true)
+          );
+        }
+      }
+    }
+  }, []);
+
+  // console.log("confirmLanguages", confirmLanguages);
   const { handleTranslateRequest } = useTranslation(
     Array.from(toLanguages)
       .filter(([_, isSelected]) => isSelected)

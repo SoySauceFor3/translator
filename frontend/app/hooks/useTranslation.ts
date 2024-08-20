@@ -14,6 +14,7 @@ export const useTranslation = (
   confirmLanguages: Language[],
   onFinishTranslation: (translation: Translation) => void
 ) => {
+  console.log("confirmLanguages", confirmLanguages);
   const [translation, setTranslation] = useState<Translation>(
     new Translation()
   );

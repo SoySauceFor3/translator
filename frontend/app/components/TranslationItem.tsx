@@ -87,7 +87,7 @@ export default function TranslationItem({
             } flex-1`}
           >
             {indexToShowConfirmText === toIndex && translation.confirmations
-              ? Array.from(translation.confirmations.values())[0]
+              ? Array.from(translation.confirmations.values())[0] //TODO: This is a hack to get the first confirmation, but it should be matched to a language.
               : translation.text}
           </Text>
         </View>
