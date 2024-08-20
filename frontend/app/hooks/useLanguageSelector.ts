@@ -1,7 +1,8 @@
 import type { Language } from "@/app/models/Language";
 import availableLanguages from "@/assets/languages.json";
 import { useState } from "react";
-export function useLanguageSelector() {
+
+export const useLanguageSelector = () => {
   const [languages, setLanguages] = useState<Map<Language, boolean>>(
     new Map(availableLanguages.map((lang) => [lang, false]))
   );
@@ -17,5 +18,6 @@ export function useLanguageSelector() {
   return {
     languages,
     handleLanguageToggle,
+    setLanguages,
   };
-}
+};

@@ -1,6 +1,7 @@
 import AudioRecorder from "@/app/components/TranslatorCard/AudioRecorder";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageSelector } from "@/app/hooks/useLanguageSelector";
+import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslation } from "@/app/hooks/useTranslation";
 import { Translation } from "@/app/models/Translation";
 import React, { useState } from "react";
@@ -12,11 +13,12 @@ interface TranslatorCardProps {
 
 const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
   const [inputText, setInputText] = useState("");
+
+  // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
   const {
     languages: toLanguages,
     handleLanguageToggle: handleToLanguageToggle,
-  } = useLanguageSelector(); // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
-
+  } = useLanguageStorage("toLanguages");
   const {
     languages: confirmLanguages,
     handleLanguageToggle: handleConfirmLanguageToggle,
