@@ -1,10 +1,10 @@
-import { TranslationItem } from "@/app/components/TranslationItem";
-import { Translation } from "@/app/models/Translation";
+import { Record } from "@/app/components/Record";
+import { Record as RecordModel } from "@/app/models/Record";
 import React, { useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
 interface TranslationHistoryProps {
-  history: Translation[];
+  history: RecordModel[];
 }
 
 export default function TranslationHistory({
@@ -29,7 +29,7 @@ export default function TranslationHistory({
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <TouchableOpacity onPress={() => handleItemPress(index)}>
-            <TranslationItem item={item} isFocused={index === focusedIndex} />
+            <Record item={item} isFocused={index === focusedIndex} />
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={true}

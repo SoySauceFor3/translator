@@ -1,6 +1,6 @@
 import useConfirmationState from "@/app/hooks/useConfirmationState";
 import { Language } from "@/app/models/Language";
-import { Piece } from "@/app/models/Translation";
+import { Piece } from "@/app/models/record";
 import React from "react";
 import { Text, View } from "react-native";
 import ConfirmationButton from "./ConfirmationButton";

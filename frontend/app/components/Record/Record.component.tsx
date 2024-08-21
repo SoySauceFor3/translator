@@ -1,19 +1,16 @@
 import { useAudio } from "@/app/hooks/useAudio";
-import { Translation } from "@/app/models/Translation";
+import { Record as RecordModel } from "@/app/models/record";
 import React from "react";
 import { View } from "react-native";
 import Entry from "./Entry";
 import InputSection from "./InputSection";
 
-interface TranslationItemProps {
-  item: Translation;
+interface RecordProps {
+  item: RecordModel;
   isFocused: boolean;
 }
 
-const TranslationItem: React.FC<TranslationItemProps> = ({
-  item,
-  isFocused,
-}) => {
+const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
   const { playAudio } = useAudio();
 
   return (
@@ -41,4 +38,4 @@ const TranslationItem: React.FC<TranslationItemProps> = ({
   );
 };
 
-export default TranslationItem;
+export default Record;

@@ -16,7 +16,7 @@ export class Piece {
   }
 }
 
-export class Translation {
+export class Record {
   input: Piece;
   translations: Map<Language, Piece>;
 

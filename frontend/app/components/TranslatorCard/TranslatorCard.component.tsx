@@ -3,14 +3,14 @@ import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslation } from "@/app/hooks/useTranslation";
 import { getLanguageFromCode, Language } from "@/app/models/Language";
-import { Translation } from "@/app/models/Translation";
+import { Record } from "@/app/models/Record";
 import * as Localization from "expo-localization";
 import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 
 interface TranslatorCardProps {
-  onAddNewTranslation: (translation: Translation) => void;
-  onUpdateTranslation: (translation: Translation) => void;
+  onAddNewTranslation: (translation: Record) => void;
+  onUpdateTranslation: (translation: Record) => void;
 }
 
 const TranslatorCard: React.FC<TranslatorCardProps> = ({
@@ -47,14 +47,14 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
   }, []);
 
   const memoizedOnAddNewTranslation = useCallback(
-    (translation: Translation) => {
+    (translation: Record) => {
       onAddNewTranslation(translation);
     },
     [onAddNewTranslation]
   );
 
   const memoizedOnUpdateTranslation = useCallback(
-    (translation: Translation) => {
+    (translation: Record) => {
       onUpdateTranslation(translation);
     },
     [onUpdateTranslation]

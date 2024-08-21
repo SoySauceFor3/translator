@@ -1,10 +1,10 @@
-import { Translation } from "@/app/models/Translation";
+import { Record } from "@/app/models/Record";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 interface InputSectionProps {
-  item: Translation;
+  item: Record;
   isFocused: boolean;
   playAudio: (audio: string) => void;
 }
