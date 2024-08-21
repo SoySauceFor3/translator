@@ -1,13 +1,7 @@
 import { TranslationItem } from "@/app/components/TranslationItem";
 import { Translation } from "@/app/models/Translation";
 import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 
 interface TranslationHistoryProps {
   history: Translation[];
@@ -29,7 +23,7 @@ export default function TranslationHistory({
   };
 
   return (
-    <View style={styles.container}>
+    <View className="w-full p-4 max-h-[53vh]">
       <FlatList
         data={[...history].reverse()}
         keyExtractor={(item, index) => index.toString()}
@@ -38,20 +32,9 @@ export default function TranslationHistory({
             <TranslationItem item={item} isFocused={index === focusedIndex} />
           </TouchableOpacity>
         )}
+        showsVerticalScrollIndicator={true}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    padding: 16,
-    maxHeight: Dimensions.get("window").height / 2.5,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-});
