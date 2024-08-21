@@ -5,15 +5,22 @@ import { useTranslation } from "@/app/hooks/useTranslation";
 import { getLanguageFromCode, Language } from "@/app/models/Language";
 import { Translation } from "@/app/models/Translation";
 import * as Localization from "expo-localization";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 
 interface TranslatorCardProps {
-  addToHistory: (translation: Translation) => void;
+  onAddNewTranslation: (translation: Translation) => void;
+  onUpdateTranslation: (translation: Translation) => void;
 }
 
-const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
+const TranslatorCard: React.FC<TranslatorCardProps> = ({
+  onAddNewTranslation,
+  onUpdateTranslation,
+}) => {
   const [inputText, setInputText] = useState("");
+  const [confirmLanguages, setConfirmLanguages] = useState<
+    Map<Language, boolean>
+  >(new Map());
 
   // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
   const {
@@ -21,35 +28,50 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({ addToHistory }) => {
     handleLanguageToggle: handleToLanguageToggle,
   } = useLanguageStorage("toLanguages");
 
-  const [confirmLanguages, setConfirmLanguages] = useState<
-    Map<Language, boolean>
-  >(new Map());
   useEffect(() => {
-    for (const locale of Localization.getLocales()) {
-      const languageCode = locale.languageCode;
-      if (languageCode !== null) {
-        const language = getLanguageFromCode(languageCode);
-        if (language) {
-          setConfirmLanguages((prevLanguages) =>
-            new Map(prevLanguages).set(language, true)
-          );
+    const initializeConfirmLanguages = () => {
+      const newConfirmLanguages = new Map<Language, boolean>();
+      for (const locale of Localization.getLocales()) {
+        const languageCode = locale.languageCode;
+        if (languageCode !== null) {
+          const language = getLanguageFromCode(languageCode);
+          if (language) {
+            newConfirmLanguages.set(language, true);
+          }
         }
       }
-    }
+      setConfirmLanguages(newConfirmLanguages);
+    };
+
+    initializeConfirmLanguages();
   }, []);
 
-  // console.log("confirmLanguages", confirmLanguages);
+  const memoizedOnAddNewTranslation = useCallback(
+    (translation: Translation) => {
+      onAddNewTranslation(translation);
+    },
+    [onAddNewTranslation]
+  );
+
+  const memoizedOnUpdateTranslation = useCallback(
+    (translation: Translation) => {
+      onUpdateTranslation(translation);
+    },
+    [onUpdateTranslation]
+  );
+
   const { handleTranslateRequest } = useTranslation(
     Array.from(toLanguages)
       .filter(([_, isSelected]) => isSelected)
       .map(([lang]) => lang),
     Array.from(confirmLanguages).map(([lang]) => lang),
-    addToHistory
+    memoizedOnAddNewTranslation,
+    memoizedOnUpdateTranslation
   );
 
-  const handleTranscription = (transcription: string) => {
+  const handleTranscription = useCallback((transcription: string) => {
     setInputText(transcription);
-  };
+  }, []);
 
   return (
     <View className="h-3/7 bg-background p-6 rounded-2xl shadow-lg">

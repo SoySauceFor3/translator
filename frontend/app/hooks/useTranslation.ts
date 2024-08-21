@@ -1,6 +1,6 @@
 import { Language } from "@/app/models/Language";
-import { Translation } from "@/app/models/Translation";
-import { useCallback, useState } from "react";
+import { Piece, Translation } from "@/app/models/Translation";
+import { useCallback } from "react";
 
 // Determine which API to use
 const useFakeApi = process.env.EXPO_PUBLIC_USE_FAKE_API === "true";
@@ -12,51 +12,50 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
 export const useTranslation = (
   toLanguages: Language[],
   confirmLanguages: Language[],
-  onFinishTranslation: (translation: Translation) => void
+  onAddNewTranslation: (translation: Translation) => void,
+  onUpdateTranslation: (translation: Translation) => void
 ) => {
-  console.log("confirmLanguages", confirmLanguages);
-  const [translation, setTranslation] = useState<Translation>(
-    new Translation()
-  );
   const handleTranslateRequest = useCallback(
-    async (text: string) => {
-      const localTranslation = new Translation({
-        text: text,
-        TTS: "",
+    async (input: string) => {
+      const translation = new Translation(new Piece(input, "", new Map()));
+      onAddNewTranslation(translation);
+
+      // Input TTS
+      fetchAudioBase64(input).then((audio: string) => {
+        translation.input.TTS = audio;
+        onUpdateTranslation(translation);
       });
 
-      const inputTTSPromise = fetchAudioBase64(text).then((audio: string) => {
-        localTranslation.input.TTS = audio;
-        setTranslation(localTranslation);
-      });
+      // Translations
+      toLanguages.forEach(async (toLang) => {
+        // Add a empty Piece for the toLang.
+        const piece = new Piece("", "", new Map());
+        translation.translations.set(toLang, piece);
+        onUpdateTranslation(translation);
 
-      const translationPromises = toLanguages.map(async (toLang) => {
-        const translatedText = await fetchTranslation(text, toLang);
+        // Get translation.
+        const translatedText = await fetchTranslation(input, toLang);
+        piece.text = translatedText;
+        onUpdateTranslation(translation);
+
+        // Get TTS for the translation.
         const audio = await fetchAudioBase64(translatedText);
-        const confirmations = new Map();
+        piece.TTS = audio;
+        onUpdateTranslation(translation);
+
         for (const confirmLang of confirmLanguages) {
           const confirmation = await fetchTranslation(
             translatedText,
             confirmLang
           );
-          confirmations.set(confirmLang, confirmation);
+
+          piece.confirmations.set(confirmLang, confirmation);
+          onUpdateTranslation(translation);
         }
-        localTranslation.translations.set(toLang, {
-          text: translatedText,
-          TTS: audio,
-          confirmations: confirmations,
-        });
-        setTranslation(localTranslation);
       });
-
-      await Promise.all([inputTTSPromise, ...translationPromises]);
-
-      // Generate confirmations.
-
-      onFinishTranslation(localTranslation);
     },
-    [toLanguages, onFinishTranslation]
+    [toLanguages, confirmLanguages, onAddNewTranslation, onUpdateTranslation]
   );
 
-  return { translation, handleTranslateRequest };
+  return { handleTranslateRequest };
 };

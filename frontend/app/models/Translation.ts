@@ -1,9 +1,19 @@
 import { Language } from "@/app/models/Language";
 
-export interface Piece {
+export class Piece {
   text: string;
   TTS: string;
-  confirmations?: Map<Language, string>;
+  confirmations: Map<Language, string>; // If this Piece is input, confirmations is a empty map.
+
+  constructor(
+    text: string = "",
+    TTS: string = "",
+    confirmations: Map<Language, string> = new Map()
+  ) {
+    this.text = text;
+    this.TTS = TTS;
+    this.confirmations = confirmations;
+  }
 }
 
 export class Translation {
@@ -11,7 +21,7 @@ export class Translation {
   translations: Map<Language, Piece>;
 
   constructor(
-    input: Piece = { text: "", TTS: "" },
+    input: Piece = new Piece(),
     translations: Map<Language, Piece> = new Map()
   ) {
     this.input = input;
