@@ -3,17 +3,17 @@ import { Piece, Translation } from "@/app/models/Translation";
 import React, { useCallback, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Language } from "../models/Language";
+import { Language } from "../../models/Language";
 
 interface TranslationItemProps {
   item: Translation;
   isFocused: boolean;
 }
 
-export default function TranslationItem({
+const TranslationItem: React.FC<TranslationItemProps> = ({
   item,
   isFocused,
-}: TranslationItemProps) {
+}) => {
   const { playAudio } = useAudio();
 
   const renderInputSection = useCallback(
@@ -158,4 +158,6 @@ export default function TranslationItem({
       {Array.from(item.translations.entries()).map(renderTranslationEntry)}
     </View>
   );
-}
+};
+
+export default TranslationItem;

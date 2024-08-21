@@ -1,4 +1,4 @@
-import TranslationItem from "@/app/components/TranslationItem";
+import { TranslationItem } from "@/app/components/TranslationItem";
 import { Translation } from "@/app/models/Translation";
 import React, { useEffect, useState } from "react";
 import {
