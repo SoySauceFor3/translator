@@ -70,8 +70,8 @@ const Entry: React.FC<TranslationEntryProps> = ({
             } flex-1`}
           >
             {isConfirmPressed && selectedConfirmationLang && piece.confirmations
-              ? piece.confirmations.get(selectedConfirmationLang)
-              : piece.text}
+              ? piece.confirmations.get(selectedConfirmationLang) || "...🖊️..."
+              : piece.text || "...🖊️..."}
           </Text>
         </View>
       </View>
