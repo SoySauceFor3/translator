@@ -14,6 +14,8 @@ export default function InputSection({
   isFocused,
   playAudio,
 }: InputSectionProps) {
+  const isTTSAvailable = item.input.TTS.trim() !== "";
+
   return (
     <View className="flex-row items-center justify-between mb-4 pb-3 border-b border-gray-200">
       <Text
@@ -23,10 +25,15 @@ export default function InputSection({
       </Text>
       {isFocused && (
         <TouchableOpacity
-          onPress={() => playAudio(item.input.TTS)}
-          className="p-3 bg-primary-light rounded-full shadow-sm"
+          onPress={() => isTTSAvailable && playAudio(item.input.TTS)}
+          className={`p-3 rounded-full shadow-sm ${isTTSAvailable ? "bg-primary-light" : "bg-gray-300"}`}
+          disabled={!isTTSAvailable}
         >
-          <Icon name="volume-up" size={24} color="#3E2723" />
+          <Icon
+            name="volume-up"
+            size={24}
+            color={isTTSAvailable ? "#3E2723" : "#999999"}
+          />
         </TouchableOpacity>
       )}
     </View>
