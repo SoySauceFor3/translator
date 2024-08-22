@@ -1,5 +1,5 @@
 import { useAudio } from "@/app/hooks/useAudio";
-import { Record as RecordModel } from "@/app/models/record";
+import { Record as RecordModel } from "@/app/models/Record";
 import React from "react";
 import { View } from "react-native";
 import Entry from "./Entry";

@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-interface ConfirmationButtonProps {
+interface ButtonsProps {
   isConfirmPressed: boolean;
   onPress: () => void;
   onRelease: () => void;
@@ -11,14 +11,14 @@ interface ConfirmationButtonProps {
   children: React.ReactNode;
 }
 
-export default function ConfirmationButton({
+export default function Buttons({
   isConfirmPressed,
   onPress,
   onRelease,
   onMove,
   playAudio,
   children,
-}: ConfirmationButtonProps) {
+}: ButtonsProps) {
   return (
     <View
       onStartShouldSetResponder={() => true}

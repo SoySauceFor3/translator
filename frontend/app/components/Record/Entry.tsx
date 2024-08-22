@@ -1,9 +1,9 @@
 import useConfirmationState from "@/app/hooks/useConfirmationState";
 import { Language } from "@/app/models/Language";
-import { Piece } from "@/app/models/record";
+import { Piece } from "@/app/models/Record";
 import React from "react";
 import { Text, View } from "react-native";
-import ConfirmationButton from "./ConfirmationButton";
+import Buttons from "./Buttons";
 import LanguageScroller from "./LanguageScroller";
 
 interface TranslationEntryProps {
@@ -53,7 +53,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
               {toLang.acronym}
             </Text>
             {isFocused && (
-              <ConfirmationButton
+              <Buttons
                 isConfirmPressed={isConfirmPressed}
                 onPress={handleConfirmPress}
                 onRelease={handleConfirmRelease}
@@ -66,7 +66,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
                     selectedLang={selectedConfirmationLang}
                   />
                 )}
-              </ConfirmationButton>
+              </Buttons>
             )}
           </View>
           <Text
