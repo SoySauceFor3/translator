@@ -1,7 +1,7 @@
 import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
-import { useTranslation } from "@/app/hooks/useTranslation";
+import { useTranslator } from "@/app/hooks/useTranslator";
 import { getLanguageFromCode, Language } from "@/app/models/Language";
 import { Record } from "@/app/models/Record";
 import * as Localization from "expo-localization";
@@ -60,7 +60,7 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
     [onUpdateTranslation]
   );
 
-  const { handleTranslateRequest } = useTranslation(
+  const { handleTranslateRequest } = useTranslator(
     Array.from(toLanguages)
       .filter(([_, isSelected]) => isSelected)
       .map(([lang]) => lang),

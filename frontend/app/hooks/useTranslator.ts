@@ -9,7 +9,7 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
   ? require("@/app/services/fakeApi")
   : require("@/app/services/api/openai");
 
-export const useTranslation = (
+export const useTranslator = (
   toLanguages: Language[],
   confirmLanguages: Language[],
   onAddNewTranslation: (translation: Record) => void,
