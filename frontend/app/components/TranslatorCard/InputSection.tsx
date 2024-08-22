@@ -22,9 +22,13 @@ const InputSection: React.FC<InputSectionProps> = ({
   handleTranscription,
 }) => {
   const handleTranslate = () => {
+    // if (inputText.trim()) {
     Keyboard.dismiss();
     handleTranslateRequest(inputText);
+    // }
   };
+
+  const isInputEmpty = !inputText.trim();
 
   return (
     <View className="mt-6">
@@ -41,10 +45,19 @@ const InputSection: React.FC<InputSectionProps> = ({
       <View className="mt-6 flex-row justify-between items-center">
         <AudioRecorder onTranscription={handleTranscription} />
         <TouchableOpacity
-          className="bg-primary px-8 py-4 rounded-full shadow-md"
+          className={`px-8 py-4 rounded-full shadow-md ${
+            isInputEmpty ? "bg-gray-400" : "bg-primary"
+          }`}
           onPress={handleTranslate}
+          disabled={isInputEmpty}
         >
-          <Text className="text-white font-bold text-lg">Translate</Text>
+          <Text
+            className={`font-bold text-lg ${
+              isInputEmpty ? "text-gray-600" : "text-white"
+            }`}
+          >
+            Translate
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
