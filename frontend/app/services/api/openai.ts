@@ -38,6 +38,7 @@ export async function fetchAudioBase64(text: string): Promise<string> {
   if (!text) return "";
 
   try {
+    console.log("fetching audio... for text: ", text);
     const mp3 = await openai.audio.speech.create({
       model: "tts-1",
       voice: "alloy",
@@ -48,13 +49,20 @@ export async function fetchAudioBase64(text: string): Promise<string> {
       throw new Error("Failed to fetch audio");
     }
 
-    const arrayBuffer = await mp3.arrayBuffer();
-    return arrayBufferToBase64(arrayBuffer);
+    // Get the audio data as a Uint8Array
+    const audioData = await mp3.arrayBuffer();
+
+    // Convert the audio data to a base64 string
+    const base64Audio = arrayBufferToBase64(audioData);
+
+    return base64Audio;
   } catch (error) {
     console.error("Error fetching audio:", error);
     return "";
   }
 }
+
+// Helper function to convert ArrayBuffer to Base64
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
   let binary = "";
   const bytes = new Uint8Array(buffer);
