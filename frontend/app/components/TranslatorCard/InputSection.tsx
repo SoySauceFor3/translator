@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Keyboard,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AudioRecorder from "./AudioRecorder";
 
 interface InputSectionProps {
@@ -15,6 +21,11 @@ const InputSection: React.FC<InputSectionProps> = ({
   handleTranslateRequest,
   handleTranscription,
 }) => {
+  const handleTranslate = () => {
+    Keyboard.dismiss();
+    handleTranslateRequest(inputText);
+  };
+
   return (
     <View className="mt-6">
       <TextInput
@@ -31,7 +42,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         <AudioRecorder onTranscription={handleTranscription} />
         <TouchableOpacity
           className="bg-primary px-8 py-4 rounded-full shadow-md"
-          onPress={() => handleTranslateRequest(inputText)}
+          onPress={handleTranslate}
         >
           <Text className="text-white font-bold text-lg">Translate</Text>
         </TouchableOpacity>
