@@ -4,7 +4,6 @@ import { Piece } from "@/app/models/Record";
 import React from "react";
 import { Text, View } from "react-native";
 import Buttons from "./Buttons";
-import LanguageScroller from "./LanguageScroller";
 
 interface TranslationEntryProps {
   toLang: Language;
@@ -23,7 +22,7 @@ enum Colors {
 
 const Entry: React.FC<TranslationEntryProps> = ({
   toLang,
-  translation,
+  translation: piece,
   entryIdx,
   isFocused,
   playAudio,
@@ -34,7 +33,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
     handleConfirmPress,
     handleConfirmRelease,
     handleScroll,
-  } = useConfirmationState(translation.confirmations);
+  } = useConfirmationState(piece.confirmations);
 
   return (
     <View key={`${toLang.name}-${entryIdx}`} className="mt-4">
@@ -58,15 +57,11 @@ const Entry: React.FC<TranslationEntryProps> = ({
                 onPress={handleConfirmPress}
                 onRelease={handleConfirmRelease}
                 onMove={handleScroll}
-                playAudio={() => playAudio(translation.TTS)}
-              >
-                {isConfirmPressed && (
-                  <LanguageScroller
-                    confirmations={translation.confirmations}
-                    selectedLang={selectedConfirmationLang}
-                  />
-                )}
-              </Buttons>
+                playAudio={() => playAudio}
+                TTS={piece.TTS}
+                selectedConfirmationLang={selectedConfirmationLang}
+                confirmations={piece.confirmations}
+              />
             )}
           </View>
           <Text
@@ -74,11 +69,9 @@ const Entry: React.FC<TranslationEntryProps> = ({
               isConfirmPressed ? Colors.TEXT_PRESSED : Colors.TEXT
             } flex-1`}
           >
-            {isConfirmPressed &&
-            selectedConfirmationLang &&
-            translation.confirmations
-              ? translation.confirmations.get(selectedConfirmationLang)
-              : translation.text}
+            {isConfirmPressed && selectedConfirmationLang && piece.confirmations
+              ? piece.confirmations.get(selectedConfirmationLang)
+              : piece.text}
           </Text>
         </View>
       </View>
