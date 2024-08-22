@@ -29,6 +29,8 @@ export default function Buttons({
   selectedConfirmationLang,
   confirmations,
 }: ButtonsProps) {
+  const isTTSAvailable = TTS.trim() !== "";
+
   return (
     <View
       onStartShouldSetResponder={() => true}
@@ -47,10 +49,17 @@ export default function Buttons({
             <Icon name="check" size={18} color="#3E2723" />
           </View>
           <TouchableOpacity
-            onPress={() => playAudio(TTS)}
-            className="p-2 bg-secondary-light rounded-full"
+            onPress={() => isTTSAvailable && playAudio(TTS)}
+            disabled={!isTTSAvailable}
+            className={`p-2 rounded-full ${
+              isTTSAvailable ? "bg-secondary-light" : "bg-gray-300"
+            }`}
           >
-            <Icon name="volume-up" size={18} color="#3E2723" />
+            <Icon
+              name="volume-up"
+              size={18}
+              color={isTTSAvailable ? "#3E2723" : "#999999"}
+            />
           </TouchableOpacity>
         </View>
       )}
