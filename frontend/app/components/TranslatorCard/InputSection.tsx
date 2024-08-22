@@ -22,10 +22,8 @@ const InputSection: React.FC<InputSectionProps> = ({
   handleTranscription,
 }) => {
   const handleTranslate = () => {
-    // if (inputText.trim()) {
     Keyboard.dismiss();
     handleTranslateRequest(inputText);
-    // }
   };
 
   const isInputEmpty = !inputText.trim();
@@ -37,7 +35,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         value={inputText}
         onChangeText={setInputText}
         onSubmitEditing={() => handleTranslateRequest(inputText)}
-        returnKeyType="go"
+        returnKeyType="default"
         placeholder="Enter text to translate"
         placeholderTextColor="#999"
         multiline
