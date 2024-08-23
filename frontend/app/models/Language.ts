@@ -1,17 +1,40 @@
+import languages from "@/assets/languages.json";
+import { Locale } from "expo-localization";
+
 export type Language = {
-  id: string;
+  id: string; // IETF BCP 47.
   name: string;
   acronym: string;
 };
 
-const languageMap: { [key: string]: Language } = {
-  en: { id: "en", name: "English", acronym: "EN" },
-  zh: { id: "zh", name: "Mandarin Chinese", acronym: "中文" },
-  // Add more languages later
-};
+export function getLanguage(locale: Locale): Language | undefined {
+  console.log("get Language from Locale", locale.languageTag);
+  const localeLangSegments = locale.languageTag.toLowerCase().split("-");
 
-export function getLanguageFromCode(
-  languageCode: string
-): Language | undefined {
-  return languageMap[languageCode];
+  let bestMatch: Language | undefined;
+  let maxMatchedSegments = 0;
+
+  for (const lang of languages) {
+    const langSegments = lang.id.toLowerCase().split("-");
+    let matchedSegments = 0;
+
+    for (
+      let i = 0;
+      i < Math.min(localeLangSegments.length, langSegments.length);
+      i++
+    ) {
+      if (localeLangSegments[i] === langSegments[i]) {
+        matchedSegments++;
+      } else {
+        break;
+      }
+    }
+
+    if (matchedSegments > 0 && matchedSegments > maxMatchedSegments) {
+      maxMatchedSegments = matchedSegments;
+      bestMatch = lang;
+    }
+  }
+  console.log("Language not found for locale", locale.languageTag);
+  return bestMatch;
 }

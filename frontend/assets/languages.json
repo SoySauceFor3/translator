@@ -115,12 +115,12 @@
     "acronym": "Tiếng Việt"
   },
   {
-    "id": "zh-CN",
+    "id": "zh-Hans",
     "name": "Chinese (Simplified)",
     "acronym": "中文 (简体)"
   },
   {
-    "id": "zh-TW",
+    "id": "zh-Hant",
     "name": "Chinese (Traditional)",
     "acronym": "中文 (繁體)"
   }
