@@ -1,3 +1,4 @@
+import { useAudio } from "@/app/hooks/useAudio";
 import { Language } from "@/app/models/Language";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -10,7 +11,6 @@ interface ButtonsProps {
   onRelease: () => void;
   onMove: (position: number) => void;
 
-  playAudio: (audio: string) => void;
   TTS: string;
 
   selectedConfirmationLang: Language | null;
@@ -23,13 +23,13 @@ export default function Buttons({
   onRelease,
   onMove,
 
-  playAudio,
   TTS,
 
   selectedConfirmationLang,
   confirmations,
 }: ButtonsProps) {
   const isTTSAvailable = TTS.trim() !== "";
+  const { playAudio } = useAudio();
 
   return (
     <View
@@ -49,7 +49,10 @@ export default function Buttons({
             <Icon name="check" size={18} color="#3E2723" />
           </View>
           <TouchableOpacity
-            onPress={() => isTTSAvailable && playAudio(TTS)}
+            onPress={() => {
+              console.log("hello");
+              playAudio(TTS);
+            }}
             disabled={!isTTSAvailable}
             className={`p-2 rounded-full ${
               isTTSAvailable ? "bg-secondary-light" : "bg-gray-300"

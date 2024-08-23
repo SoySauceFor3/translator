@@ -1,4 +1,3 @@
-import { useAudio } from "@/app/hooks/useAudio";
 import { Record as RecordModel } from "@/app/models/Record";
 import React from "react";
 import { View } from "react-native";
@@ -11,8 +10,6 @@ interface RecordProps {
 }
 
 const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
-  const { playAudio } = useAudio();
-
   return (
     <View
       className={`mb-6 p-5 rounded-xl ${
@@ -21,7 +18,7 @@ const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
           : "bg-background border-2 border-primary-light"
       }`}
     >
-      <InputSection item={item} isFocused={isFocused} playAudio={playAudio} />
+      <InputSection item={item} isFocused={isFocused} />
       {Array.from(item.translations.entries()).map(
         ([toLang, translation], entryIdx) => (
           <Entry
@@ -30,7 +27,6 @@ const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
             translation={translation}
             entryIdx={entryIdx}
             isFocused={isFocused}
-            playAudio={playAudio}
           />
         )
       )}

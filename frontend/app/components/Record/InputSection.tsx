@@ -1,3 +1,4 @@
+import { useAudio } from "@/app/hooks/useAudio";
 import { Record } from "@/app/models/Record";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -6,15 +7,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 interface InputSectionProps {
   item: Record;
   isFocused: boolean;
-  playAudio: (audio: string) => void;
 }
 
-export default function InputSection({
-  item,
-  isFocused,
-  playAudio,
-}: InputSectionProps) {
+export default function InputSection({ item, isFocused }: InputSectionProps) {
   const isTTSAvailable = item.input.TTS.trim() !== "";
+  const { playAudio } = useAudio();
 
   return (
     <View className="flex-row items-center justify-between mb-4 pb-3 border-b border-gray-200">

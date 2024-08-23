@@ -10,7 +10,6 @@ interface TranslationEntryProps {
   translation: Piece;
   entryIdx: number;
   isFocused: boolean;
-  playAudio: (audio: string) => void;
 }
 
 enum Colors {
@@ -25,7 +24,6 @@ const Entry: React.FC<TranslationEntryProps> = ({
   translation: piece,
   entryIdx,
   isFocused,
-  playAudio,
 }) => {
   const {
     selectedConfirmationLang,
@@ -57,7 +55,6 @@ const Entry: React.FC<TranslationEntryProps> = ({
                 onPress={handleConfirmPress}
                 onRelease={handleConfirmRelease}
                 onMove={handleScroll}
-                playAudio={() => playAudio}
                 TTS={piece.TTS}
                 selectedConfirmationLang={selectedConfirmationLang}
                 confirmations={piece.confirmations}
