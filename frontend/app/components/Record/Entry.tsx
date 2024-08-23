@@ -1,8 +1,7 @@
-import useConfirmationState from "@/app/hooks/useConfirmationState";
 import { Language } from "@/app/models/Language";
 import { Piece } from "@/app/models/Record";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Buttons from "./Buttons";
 
 interface TranslationEntryProps {
@@ -25,53 +24,56 @@ const Entry: React.FC<TranslationEntryProps> = ({
   entryIdx,
   isFocused,
 }) => {
-  const {
-    selectedConfirmationLang,
-    isConfirmPressed,
-    handleConfirmPress,
-    handleConfirmRelease,
-    handleScroll,
-  } = useConfirmationState(piece.confirmations);
+  const [confirmationMode, setConfirmationMode] = React.useState(false);
+  const [selectedConfirmationLang, setSelectedConfirmationLang] =
+    React.useState<Language | null>(null);
+
+  React.useEffect(() => {
+    if (!isFocused) {
+      setConfirmationMode(false);
+    }
+  }, [isFocused]);
 
   return (
     <View key={`${toLang.name}-${entryIdx}`} className="mt-4">
-      <View
+      <TouchableOpacity
+        onPress={() => setConfirmationMode(false)}
+        activeOpacity={confirmationMode ? 0.2 : 1}
         className={`flex-row items-start justify-between p-3 rounded-lg ${
-          isConfirmPressed ? Colors.PRESSED : Colors.BACKGROUND
+          confirmationMode ? Colors.PRESSED : Colors.BACKGROUND
         }`}
       >
         <View className="flex-row items-start flex-1 mr-2">
           <View className="flex-col items-start mr-3">
             <Text
               className={`text-lg font-semibold mb-2 ${
-                isConfirmPressed ? Colors.TEXT_PRESSED : "text-secondary-dark"
+                confirmationMode ? Colors.TEXT_PRESSED : "text-secondary-dark"
               }`}
             >
               {toLang.acronym}
             </Text>
             {isFocused && (
               <Buttons
-                isConfirmPressed={isConfirmPressed}
-                onPress={handleConfirmPress}
-                onRelease={handleConfirmRelease}
-                onMove={handleScroll}
+                confirmationMode={confirmationMode}
+                turnOnConfirmationMode={() => setConfirmationMode(true)}
                 TTS={piece.TTS}
                 selectedConfirmationLang={selectedConfirmationLang}
                 confirmations={piece.confirmations}
+                onConfirmationLangChange={setSelectedConfirmationLang}
               />
             )}
           </View>
           <Text
             className={`${isFocused ? "text-lg" : "text-base"} ${
-              isConfirmPressed ? Colors.TEXT_PRESSED : Colors.TEXT
+              confirmationMode ? Colors.TEXT_PRESSED : Colors.TEXT
             } flex-1`}
           >
-            {isConfirmPressed && selectedConfirmationLang && piece.confirmations
+            {confirmationMode && selectedConfirmationLang && piece.confirmations
               ? piece.confirmations.get(selectedConfirmationLang) || "...🖊️..."
               : piece.text || "...🖊️..."}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
