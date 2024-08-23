@@ -4,6 +4,7 @@ import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslator } from "@/app/hooks/useTranslator";
 import { getLanguageFromCode, Language } from "@/app/models/Language";
 import { Record } from "@/app/models/Record";
+import availableLanguages from "@/assets/languages.json";
 import * as Localization from "expo-localization";
 import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
@@ -26,7 +27,7 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
   const {
     languages: toLanguages,
     handleLanguageToggle: handleToLanguageToggle,
-  } = useLanguageStorage("toLanguages");
+  } = useLanguageStorage("toLanguages", availableLanguages);
 
   useEffect(() => {
     const initializeConfirmLanguages = () => {

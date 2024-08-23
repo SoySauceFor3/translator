@@ -1,14 +1,18 @@
+import type { Language } from "@/app/models/Language";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useLanguageSelector } from "./useLanguageSelector";
 
-export const useLanguageStorage = (storageKey: string) => {
+export const useLanguageStorage = (
+  storageKey: string,
+  availableLanguages: Language[]
+) => {
   const { languages, handleLanguageToggle, setLanguages } =
-    useLanguageSelector();
+    useLanguageSelector(availableLanguages);
 
   useEffect(() => {
     loadSavedLanguages();
-  }, []);
+  }, [availableLanguages]);
 
   useEffect(() => {
     saveLanguages();
@@ -18,7 +22,21 @@ export const useLanguageStorage = (storageKey: string) => {
     try {
       const savedLanguages = await AsyncStorage.getItem(storageKey);
       if (savedLanguages) {
-        setLanguages(new Map(JSON.parse(savedLanguages)));
+        const parsedLanguages = JSON.parse(savedLanguages);
+        const newLanguages = new Map(
+          availableLanguages.map((lang) => [lang, false])
+        );
+        parsedLanguages.forEach(
+          ([savedLang, isSelected]: [Language, boolean]) => {
+            const matchingLang = availableLanguages.find(
+              (lang) => lang.id === savedLang.id
+            );
+            if (matchingLang) {
+              newLanguages.set(matchingLang, isSelected);
+            }
+          }
+        );
+        setLanguages(newLanguages);
       }
     } catch (error) {
       console.error(`Error loading languages for ${storageKey}:`, error);

@@ -1,11 +1,27 @@
 import type { Language } from "@/app/models/Language";
-import availableLanguages from "@/assets/languages.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useLanguageSelector = () => {
+export const useLanguageSelector = (availableLanguages: Language[]) => {
   const [languages, setLanguages] = useState<Map<Language, boolean>>(
     new Map(availableLanguages.map((lang) => [lang, false]))
   );
+
+  useEffect(() => {
+    setLanguages((prevLanguages) => {
+      const newLanguages = new Map(
+        availableLanguages.map((lang) => [lang, false])
+      );
+      prevLanguages.forEach((isSelected, lang) => {
+        const matchingLang = Array.from(newLanguages.keys()).find(
+          (newLang) => newLang.id === lang.id
+        );
+        if (matchingLang) {
+          newLanguages.set(matchingLang, isSelected);
+        }
+      });
+      return newLanguages;
+    });
+  }, [availableLanguages]);
 
   const handleLanguageToggle = (language: Language) => {
     setLanguages((prevLanguages) => {
