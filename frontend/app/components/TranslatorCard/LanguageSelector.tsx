@@ -25,9 +25,6 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const selectedLanguages = Array.from(availableLanguages).filter(
     ([_, isSelected]) => isSelected
   );
-  const unselectedLanguages = Array.from(availableLanguages).filter(
-    ([_, isSelected]) => !isSelected
-  );
 
   return (
     <View>
@@ -58,22 +55,27 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         onRequestClose={() => setModalVisible(false)}
       >
         <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
-          <View className="bg-surface p-4 rounded-lg w-3/4">
+          <View className="bg-surface p-4 rounded-lg w-3/4 max-h-[70%]">
             <Text className="text-lg font-bold mb-2 text-text-primary">
               Select Languages
             </Text>
             <FlatList
-              data={unselectedLanguages}
-              renderItem={({ item: [lang, _] }) => (
+              data={Array.from(availableLanguages)}
+              renderItem={({ item: [lang, isSelected] }) => (
                 <TouchableOpacity
-                  className="py-2"
+                  className={`py-2 ${isSelected ? "opacity-50" : ""}`}
                   onPress={() => {
                     onLanguageToggle(lang);
-                    setModalVisible(false);
+                    if (!isSelected) {
+                      setModalVisible(false);
+                    }
                   }}
+                  disabled={isSelected}
                 >
-                  <Text className="text-text-secondary">
-                    {lang.name} ({lang.acronym})
+                  <Text
+                    className={`${isSelected ? "text-gray-400" : "text-text-secondary"}`}
+                  >
+                    {lang.name} ({lang.acronym}){isSelected && " (Selected)"}
                   </Text>
                 </TouchableOpacity>
               )}
