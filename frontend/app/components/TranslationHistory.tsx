@@ -28,11 +28,11 @@ export default function TranslationHistory({
     <View className="w-full p-4 max-h-[53vh]">
       <FlatList
         data={[...history].reverse()}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
+        keyExtractor={(record, _) => record.id}
+        renderItem={({ item: record, index }) => (
           <TouchableOpacity onPress={() => handleItemPress(index)}>
             <Record
-              item={item}
+              record={record}
               isFocused={index === focusedIndex}
               confirmLang={confirmLang}
               setConfirmLang={setConfirmLang}

@@ -1,5 +1,5 @@
 import { Language } from "@/app/models/Language";
-
+import * as Crypto from "expo-crypto";
 export class Piece {
   text: string;
   TTS: string;
@@ -17,6 +17,7 @@ export class Piece {
 }
 
 export class Record {
+  id: string;
   input: Piece;
   translations: Map<Language, Piece>;
 
@@ -24,6 +25,7 @@ export class Record {
     input: Piece = new Piece(),
     translations: Map<Language, Piece> = new Map()
   ) {
+    this.id = Crypto.randomUUID();
     this.input = input;
     this.translations = translations;
   }

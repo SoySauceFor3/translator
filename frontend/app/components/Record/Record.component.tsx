@@ -6,14 +6,14 @@ import Entry from "./Entry";
 import InputSection from "./InputSection";
 
 interface RecordProps {
-  item: RecordModel;
+  record: RecordModel;
   isFocused: boolean;
   confirmLang: Language | undefined;
   setConfirmLang: (lang: Language | undefined) => void;
 }
 
 const Record: React.FC<RecordProps> = ({
-  item,
+  record,
   isFocused,
   confirmLang,
   setConfirmLang,
@@ -26,13 +26,13 @@ const Record: React.FC<RecordProps> = ({
           : "bg-background border-2 border-primary-light"
       }`}
     >
-      <InputSection item={item} isFocused={isFocused} />
-      {Array.from(item.translations.entries()).map(
+      <InputSection item={record} isFocused={isFocused} />
+      {Array.from(record.translations.entries()).map(
         ([toLang, translation], entryIdx) => (
           <Entry
-            key={`${toLang.id} : ${entryIdx}`}
+            key={`${record.id}-${toLang.id}`}
             toLang={toLang}
-            translation={translation}
+            piece={translation}
             entryIdx={entryIdx}
             isFocused={isFocused}
             confirmLang={confirmLang}
