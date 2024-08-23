@@ -1,4 +1,5 @@
 import { Record } from "@/app/components/Record";
+import { useConfirmLang } from "@/app/hooks/useConfirmLanguage";
 import { Record as RecordModel } from "@/app/models/Record";
 import React, { useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
@@ -11,6 +12,7 @@ export default function TranslationHistory({
   history,
 }: TranslationHistoryProps) {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const { confirmLang, setConfirmLang } = useConfirmLang();
 
   useEffect(() => {
     if (history.length > 0) {
@@ -29,7 +31,12 @@ export default function TranslationHistory({
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <TouchableOpacity onPress={() => handleItemPress(index)}>
-            <Record item={item} isFocused={index === focusedIndex} />
+            <Record
+              item={item}
+              isFocused={index === focusedIndex}
+              confirmLang={confirmLang}
+              setConfirmLang={setConfirmLang}
+            />
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={true}

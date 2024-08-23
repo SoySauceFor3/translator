@@ -1,3 +1,4 @@
+import { Language } from "@/app/models/Language";
 import { Record as RecordModel } from "@/app/models/Record";
 import React from "react";
 import { View } from "react-native";
@@ -7,9 +8,16 @@ import InputSection from "./InputSection";
 interface RecordProps {
   item: RecordModel;
   isFocused: boolean;
+  confirmLang: Language | undefined;
+  setConfirmLang: (lang: Language | undefined) => void;
 }
 
-const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
+const Record: React.FC<RecordProps> = ({
+  item,
+  isFocused,
+  confirmLang,
+  setConfirmLang,
+}) => {
   return (
     <View
       className={`mb-6 p-5 rounded-xl ${
@@ -27,6 +35,8 @@ const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
             translation={translation}
             entryIdx={entryIdx}
             isFocused={isFocused}
+            confirmLang={confirmLang}
+            setConfirmLang={setConfirmLang}
           />
         )
       )}

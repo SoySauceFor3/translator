@@ -9,6 +9,8 @@ interface TranslationEntryProps {
   translation: Piece;
   entryIdx: number;
   isFocused: boolean;
+  confirmLang: Language | undefined;
+  setConfirmLang: (lang: Language | undefined) => void;
 }
 
 enum Colors {
@@ -23,11 +25,10 @@ const Entry: React.FC<TranslationEntryProps> = ({
   translation: piece,
   entryIdx,
   isFocused,
+  confirmLang,
+  setConfirmLang,
 }) => {
   const [confirmationMode, setConfirmationMode] = React.useState(false);
-  const [selectedConfirmationLang, setSelectedConfirmationLang] =
-    React.useState<Language | null>(null);
-
   React.useEffect(() => {
     if (!isFocused) {
       setConfirmationMode(false);
@@ -59,7 +60,8 @@ const Entry: React.FC<TranslationEntryProps> = ({
                 turnOnConfirmationMode={() => setConfirmationMode(true)}
                 TTS={piece.TTS}
                 toLang={toLang}
-                onConfirmationLangChange={setSelectedConfirmationLang} //TODO: NOT WORKING. Should change selectedConfirmationLang.
+                confirmLang={confirmLang}
+                onConfirmLangChange={setConfirmLang}
               />
             )}
           </View>
@@ -68,8 +70,8 @@ const Entry: React.FC<TranslationEntryProps> = ({
               confirmationMode ? Colors.TEXT_PRESSED : Colors.TEXT
             } flex-1`}
           >
-            {confirmationMode && selectedConfirmationLang && piece.confirmations
-              ? piece.confirmations.get(selectedConfirmationLang) || "...🖊️..."
+            {confirmationMode && confirmLang && piece.confirmations
+              ? piece.confirmations.get(confirmLang) || "...🖊️..."
               : piece.text || "...🖊️..."}
           </Text>
         </View>

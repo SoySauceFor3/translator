@@ -10,7 +10,8 @@ interface ButtonsProps {
   turnOnConfirmationMode: () => void;
   TTS: string;
   toLang: Language;
-  onConfirmationLangChange: (lang: Language) => void;
+  confirmLang: Language | undefined;
+  onConfirmLangChange: (lang: Language | undefined) => void;
 }
 
 export default function Buttons({
@@ -18,7 +19,8 @@ export default function Buttons({
   turnOnConfirmationMode,
   TTS,
   toLang,
-  onConfirmationLangChange,
+  confirmLang,
+  onConfirmLangChange,
 }: ButtonsProps) {
   const isTTSAvailable = TTS.trim() !== "";
   const { playAudio } = useAudio();
@@ -28,7 +30,8 @@ export default function Buttons({
       {isConfirmationMode ? (
         <ConfirmLangSelector
           toLang={toLang}
-          onLangChange={onConfirmationLangChange}
+          confirmLang={confirmLang}
+          onConfirmLangChange={onConfirmLangChange}
         />
       ) : (
         <View className="flex-row justify-between">

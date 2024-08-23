@@ -8,16 +8,16 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 interface ConfirmLangSelectorProps {
   toLang: Language;
-  onLangChange: (lang: Language) => void;
+  confirmLang: Language | undefined;
+  onConfirmLangChange: (lang: Language | undefined) => void;
 }
 
 export default function ConfirmLangSelector({
   toLang,
-  onLangChange,
+  confirmLang,
+  onConfirmLangChange,
 }: ConfirmLangSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [confirmLang, setConfirmLang] = useState<Language | null>(null);
-
   const langs: Language[] = Object.values(availableLanguages).filter(
     (lang) => lang.id !== toLang.id
   );
@@ -56,8 +56,7 @@ export default function ConfirmLangSelector({
               <TouchableOpacity
                 key={lang.acronym}
                 onPress={() => {
-                  onLangChange(lang);
-                  setConfirmLang(lang);
+                  onConfirmLangChange(lang);
                   setIsOpen(false);
                 }}
                 className={`p-2 ${
