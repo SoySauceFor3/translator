@@ -1,52 +1,127 @@
 [
   {
-    "name": "English",
-    "acronym": "EN",
-    "icon": "https://example.com/icons/english.png"
+    "id": "ar",
+    "name": "Arabic",
+    "acronym": "العربية"
   },
   {
-    "name": "Mandarin Chinese",
-    "acronym": "中文",
-    "icon": "https://example.com/icons/mandarin.png"
-  },
-  {
-    "name": "Hindi",
-    "acronym": "हिन्दी",
-    "icon": "https://example.com/icons/hindi.png"
-  },
-  {
-    "name": "Spanish",
-    "acronym": "ES",
-    "icon": "https://example.com/icons/spanish.png"
-  },
-  {
-    "name": "French",
-    "acronym": "FR",
-    "icon": "https://example.com/icons/french.png"
-  },
-  {
-    "name": "Standard Arabic",
-    "acronym": "العربية",
-    "icon": "https://example.com/icons/arabic.png"
-  },
-  {
+    "id": "bn",
     "name": "Bengali",
-    "acronym": "বাংলা",
-    "icon": "https://example.com/icons/bengali.png"
+    "acronym": "বাংলা"
   },
   {
+    "id": "de",
+    "name": "German",
+    "acronym": "DE"
+  },
+  {
+    "id": "en-GB",
+    "name": "English (UK)",
+    "acronym": "EN-GB"
+  },
+  {
+    "id": "en-US",
+    "name": "English (US)",
+    "acronym": "EN-US"
+  },
+  {
+    "id": "es",
+    "name": "Spanish",
+    "acronym": "ES"
+  },
+  {
+    "id": "fr",
+    "name": "French",
+    "acronym": "FR"
+  },
+  {
+    "id": "hi",
+    "name": "Hindi",
+    "acronym": "हिन्दी"
+  },
+  {
+    "id": "id",
+    "name": "Indonesian",
+    "acronym": "ID"
+  },
+  {
+    "id": "it",
+    "name": "Italian",
+    "acronym": "IT"
+  },
+  {
+    "id": "ja",
+    "name": "Japanese",
+    "acronym": "日本語"
+  },
+  {
+    "id": "ko",
+    "name": "Korean",
+    "acronym": "한국어"
+  },
+  {
+    "id": "mr",
+    "name": "Marathi",
+    "acronym": "मराठी"
+  },
+  {
+    "id": "ms",
+    "name": "Malay",
+    "acronym": "Bahasa Melayu"
+  },
+  {
+    "id": "pa",
+    "name": "Punjabi",
+    "acronym": "ਪੰਜਾਬੀ"
+  },
+  {
+    "id": "pt-BR",
+    "name": "Portuguese (Brazil)",
+    "acronym": "PT-BR"
+  },
+  {
+    "id": "pt-PT",
+    "name": "Portuguese (Portugal)",
+    "acronym": "PT-PT"
+  },
+  {
+    "id": "ru",
     "name": "Russian",
-    "acronym": "РУ",
-    "icon": "https://example.com/icons/russian.png"
+    "acronym": "РУ"
   },
   {
-    "name": "Portuguese",
-    "acronym": "PT",
-    "icon": "https://example.com/icons/portuguese.png"
+    "id": "ta",
+    "name": "Tamil",
+    "acronym": "தமிழ்"
   },
   {
+    "id": "te",
+    "name": "Telugu",
+    "acronym": "తెలుగు"
+  },
+  {
+    "id": "tr",
+    "name": "Turkish",
+    "acronym": "TR"
+  },
+  {
+    "id": "ur",
     "name": "Urdu",
-    "acronym": "اردو",
-    "icon": "https://example.com/icons/urdu.png"
+    "acronym": "اردو"
+  },
+  {
+    "id": "vi",
+    "name": "Vietnamese",
+    "acronym": "Tiếng Việt"
+  },
+  {
+    "id": "zh-CN",
+    "name": "Chinese (Simplified)",
+    "acronym": "中文 (简体)"
+  },
+  {
+    "id": "zh-TW",
+    "name": "Chinese (Traditional)",
+    "acronym": "中文 (繁體)"
   }
 ]

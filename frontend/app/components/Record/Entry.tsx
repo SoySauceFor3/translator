@@ -35,7 +35,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
   }, [isFocused]);
 
   return (
-    <View key={`${toLang.name}-${entryIdx}`} className="mt-4">
+    <View key={`${toLang.id} : ${entryIdx}`} className="mt-4">
       <TouchableOpacity
         onPress={() => setConfirmationMode(false)}
         activeOpacity={confirmationMode ? 0.2 : 1}

@@ -22,7 +22,7 @@ const Record: React.FC<RecordProps> = ({ item, isFocused }) => {
       {Array.from(item.translations.entries()).map(
         ([toLang, translation], entryIdx) => (
           <Entry
-            key={`${toLang.name}-${entryIdx}`}
+            key={`${toLang.id} : ${entryIdx}`}
             toLang={toLang}
             translation={translation}
             entryIdx={entryIdx}

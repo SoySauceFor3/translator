@@ -1,12 +1,12 @@
 export type Language = {
+  id: string;
   name: string;
   acronym: string;
-  icon: string;
 };
 
 const languageMap: { [key: string]: Language } = {
-  en: { name: "English", acronym: "EN", icon: "" },
-  zh: { name: "Mandarin Chinese", acronym: "中文", icon: "" },
+  en: { id: "en", name: "English", acronym: "EN" },
+  zh: { id: "zh", name: "Mandarin Chinese", acronym: "中文" },
   // Add more languages later
 };
 
