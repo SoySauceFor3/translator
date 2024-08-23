@@ -3,7 +3,7 @@ import { Language } from "@/app/models/Language";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import LanguageScroller from "./LanguageScroller";
+import ConfirmLangSelector from "./ConfirmLanguageSelector";
 
 interface ButtonsProps {
   confirmationMode: boolean;
@@ -28,7 +28,7 @@ export default function Buttons({
   return (
     <View className="w-20">
       {isConfirmationMode ? (
-        <LanguageScroller
+        <ConfirmLangSelector
           confirmations={confirmations}
           selectedLang={selectedConfirmationLang}
           onLangChange={onConfirmationLangChange}

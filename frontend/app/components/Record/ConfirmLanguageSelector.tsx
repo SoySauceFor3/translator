@@ -3,17 +3,17 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-interface LanguageScrollerProps {
+interface ConfirmLangSelector {
   confirmations: Map<Language, string> | undefined;
   selectedLang: Language | null;
   onLangChange: (lang: Language) => void;
 }
 
-export default function LanguageScroller({
+export default function ConfirmLangSelector({
   confirmations,
   selectedLang,
   onLangChange,
-}: LanguageScrollerProps) {
+}: ConfirmLangSelector) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
