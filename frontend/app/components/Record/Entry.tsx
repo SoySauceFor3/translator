@@ -71,7 +71,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
           >
             {confirmationMode && confirmLang && piece.confirmations
               ? piece.confirmations.get(confirmLang) ||
-                `...🖊️...confirm for ${piece.text} in ${confirmLang.name}`
+                `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
               : piece.text || "...🖊️..."}
           </Text>
         </View>

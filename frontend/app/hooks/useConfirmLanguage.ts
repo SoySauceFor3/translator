@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 const CONFIRM_LANG_STORAGE_KEY = "confirmLang";
 
+// TODO: Check if this hook can work fine with availableLanguages change.
 export function useConfirmLang() {
   const [confirmLang, setConfirmLang] = useState<Language | undefined>(
     undefined

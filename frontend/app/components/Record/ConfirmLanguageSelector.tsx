@@ -1,6 +1,5 @@
-import { getLanguage, Language } from "@/app/models/Language";
-import availableLanguages from "@/assets/languages.json";
-import * as Localization from "expo-localization";
+import { useLanguages } from "@/app/hooks/useLanguages";
+import { Language } from "@/app/models/Language";
 import React, { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Popover from "react-native-popover-view";
@@ -18,19 +17,8 @@ export default function ConfirmLangSelector({
   onConfirmLangChange,
 }: ConfirmLangSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const langs: Language[] = Object.values(availableLanguages).filter(
-    (lang) => lang.id !== toLang.id
-  );
-
-  const systemLangs = Localization.getLocales()
-    .map((locale) => getLanguage(locale))
-    .filter((lang) => lang !== undefined);
-
-  // reorder langs to put systemLangs first, but keep the order of the other langs
-  const reorderedLangs = [
-    ...systemLangs,
-    ...langs.filter((lang) => !systemLangs.includes(lang)),
-  ];
+  const { reorderedLangs } = useLanguages();
+  const confirmLangs = reorderedLangs.filter((lang) => lang.id !== toLang.id);
 
   return (
     <View>
@@ -52,7 +40,7 @@ export default function ConfirmLangSelector({
             {"Select Language"}
           </Text>
           <ScrollView className="max-h-60">
-            {reorderedLangs.map((lang: Language) => (
+            {confirmLangs.map((lang: Language) => (
               <TouchableOpacity
                 key={lang.acronym}
                 onPress={() => {
