@@ -2,7 +2,6 @@ import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslator } from "@/app/hooks/useTranslator";
-import { Language } from "@/app/models/Language";
 import { Record } from "@/app/models/Record";
 import availableLanguages from "@/assets/languages.json";
 import React, { useCallback, useState } from "react";
@@ -18,9 +17,6 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
   onUpdateTranslation,
 }) => {
   const [inputText, setInputText] = useState("");
-  const [confirmLanguages, setConfirmLanguages] = useState<
-    Map<Language, boolean>
-  >(new Map());
 
   // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
   const {
@@ -46,7 +42,6 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
     Array.from(toLanguages)
       .filter(([_, isSelected]) => isSelected)
       .map(([lang]) => lang),
-    Array.from(confirmLanguages).map(([lang]) => lang),
     memoizedOnAddNewTranslation,
     memoizedOnUpdateTranslation
   );

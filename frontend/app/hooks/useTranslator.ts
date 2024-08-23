@@ -1,6 +1,8 @@
+import { useLanguages } from "@/app/hooks/useLanguages";
 import { Language } from "@/app/models/Language";
 import { Piece, Record } from "@/app/models/Record";
 import { useCallback } from "react";
+import { useConfirmLang } from "./useConfirmLanguage";
 
 // Determine which API to use
 const useFakeApi = process.env.EXPO_PUBLIC_USE_FAKE_API === "true";
@@ -11,10 +13,12 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
 
 export const useTranslator = (
   toLanguages: Language[],
-  confirmLanguages: Language[],
   onAddNewTranslation: (translation: Record) => void,
   onUpdateTranslation: (translation: Record) => void
 ) => {
+  const { systemLangs } = useLanguages();
+  const { confirmLang } = useConfirmLang(); // the last used confirm language.
+
   const handleTranslateRequest = useCallback(
     async (input: string) => {
       const translation = new Record(new Piece(input, "", new Map()));
@@ -43,7 +47,17 @@ export const useTranslator = (
         piece.TTS = audio;
         onUpdateTranslation(translation);
 
-        for (const confirmLang of confirmLanguages) {
+        // Confirmations.
+        const confirmLangs: Language[] = Array.from(
+          new Set(
+            [...systemLangs, confirmLang].filter(
+              (lang): lang is Language =>
+                lang !== undefined && lang.id !== toLang.id
+            )
+          )
+        );
+
+        for (const confirmLang of confirmLangs) {
           const confirmation = await fetchTranslation(
             translatedText,
             confirmLang
@@ -54,7 +68,13 @@ export const useTranslator = (
         }
       });
     },
-    [toLanguages, confirmLanguages, onAddNewTranslation, onUpdateTranslation]
+    [
+      toLanguages,
+      confirmLang,
+      systemLangs,
+      onAddNewTranslation,
+      onUpdateTranslation,
+    ]
   );
 
   return { handleTranslateRequest };
