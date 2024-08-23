@@ -2,11 +2,10 @@ import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslator } from "@/app/hooks/useTranslator";
-import { getLanguageFromCode, Language } from "@/app/models/Language";
+import { Language } from "@/app/models/Language";
 import { Record } from "@/app/models/Record";
 import availableLanguages from "@/assets/languages.json";
-import * as Localization from "expo-localization";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 
 interface TranslatorCardProps {
@@ -28,24 +27,6 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({
     languages: toLanguages,
     handleLanguageToggle: handleToLanguageToggle,
   } = useLanguageStorage("toLanguages", availableLanguages);
-
-  useEffect(() => {
-    const initializeConfirmLanguages = () => {
-      const newConfirmLanguages = new Map<Language, boolean>();
-      for (const locale of Localization.getLocales()) {
-        const languageCode = locale.languageCode;
-        if (languageCode !== null) {
-          const language = getLanguageFromCode(languageCode);
-          if (language) {
-            newConfirmLanguages.set(language, true);
-          }
-        }
-      }
-      setConfirmLanguages(newConfirmLanguages);
-    };
-
-    initializeConfirmLanguages();
-  }, []);
 
   const memoizedOnAddNewTranslation = useCallback(
     (translation: Record) => {

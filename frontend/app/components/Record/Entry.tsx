@@ -39,6 +39,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
       <TouchableOpacity
         onPress={() => setConfirmationMode(false)}
         activeOpacity={confirmationMode ? 0.2 : 1}
+        disabled={!confirmationMode}
         className={`flex-row items-start justify-between p-3 rounded-lg ${
           confirmationMode ? Colors.PRESSED : Colors.BACKGROUND
         }`}
@@ -57,9 +58,8 @@ const Entry: React.FC<TranslationEntryProps> = ({
                 confirmationMode={confirmationMode}
                 turnOnConfirmationMode={() => setConfirmationMode(true)}
                 TTS={piece.TTS}
-                selectedConfirmationLang={selectedConfirmationLang}
-                confirmations={piece.confirmations}
-                onConfirmationLangChange={setSelectedConfirmationLang}
+                toLang={toLang}
+                onConfirmationLangChange={setSelectedConfirmationLang} //TODO: NOT WORKING. Should change selectedConfirmationLang.
               />
             )}
           </View>

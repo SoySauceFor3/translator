@@ -9,8 +9,7 @@ interface ButtonsProps {
   confirmationMode: boolean;
   turnOnConfirmationMode: () => void;
   TTS: string;
-  selectedConfirmationLang: Language | null;
-  confirmations: Map<Language, string>;
+  toLang: Language;
   onConfirmationLangChange: (lang: Language) => void;
 }
 
@@ -18,8 +17,7 @@ export default function Buttons({
   confirmationMode: isConfirmationMode,
   turnOnConfirmationMode,
   TTS,
-  selectedConfirmationLang,
-  confirmations,
+  toLang,
   onConfirmationLangChange,
 }: ButtonsProps) {
   const isTTSAvailable = TTS.trim() !== "";
@@ -29,8 +27,7 @@ export default function Buttons({
     <View className="w-20">
       {isConfirmationMode ? (
         <ConfirmLangSelector
-          confirmations={confirmations}
-          selectedLang={selectedConfirmationLang}
+          toLang={toLang}
           onLangChange={onConfirmationLangChange}
         />
       ) : (
