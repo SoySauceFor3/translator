@@ -1,3 +1,4 @@
+import { useInputText } from "@/app/contexts/InputTextContext";
 import React from "react";
 import {
   Keyboard,
@@ -9,18 +10,16 @@ import {
 import AudioRecorder from "./AudioRecorder";
 
 interface InputSectionProps {
-  inputText: string;
-  setInputText: (text: string) => void;
   handleTranslateRequest: (text: string) => void;
   handleTranscription: (transcription: string) => void;
 }
 
 const InputSection: React.FC<InputSectionProps> = ({
-  inputText,
-  setInputText,
   handleTranslateRequest,
   handleTranscription,
 }) => {
+  const { inputText, setInputText, inputRef } = useInputText();
+
   const handleTranslate = () => {
     Keyboard.dismiss();
     handleTranslateRequest(inputText);
@@ -31,6 +30,7 @@ const InputSection: React.FC<InputSectionProps> = ({
   return (
     <View className="mt-6">
       <TextInput
+        ref={inputRef}
         className="w-full h-32 text-lg text-text-primary bg-surface p-4 rounded-xl"
         value={inputText}
         onChangeText={setInputText}

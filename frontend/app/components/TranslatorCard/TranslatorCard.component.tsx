@@ -1,15 +1,16 @@
 import InputSection from "@/app/components/TranslatorCard//InputSection";
 import LanguageSelector from "@/app/components/TranslatorCard/LanguageSelector";
+import { useInputText } from "@/app/contexts/InputTextContext";
 import { useLanguageStorage } from "@/app/hooks/useLanguageStorage";
 import { useTranslator } from "@/app/hooks/useTranslator";
 import availableLanguages from "@/assets/languages.json";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 
 interface TranslatorCardProps {}
 
 const TranslatorCard: React.FC<TranslatorCardProps> = ({}) => {
-  const [inputText, setInputText] = useState("");
+  const { setInputText } = useInputText();
 
   // NOTE: the conversation mode will be considered in the future, and by then there will be a fromLanguages --- which will actually be "left / right languages".
   const {
@@ -35,8 +36,6 @@ const TranslatorCard: React.FC<TranslatorCardProps> = ({}) => {
         type="to"
       />
       <InputSection
-        inputText={inputText}
-        setInputText={setInputText}
         handleTranslateRequest={handleTranslateRequest}
         handleTranscription={handleTranscription}
       />

@@ -1,3 +1,4 @@
+import { useInputText } from "@/app/contexts/InputTextContext";
 import { useAudio } from "@/app/hooks/useAudio";
 import { Record } from "@/app/models/Record";
 import React from "react";
@@ -12,14 +13,22 @@ interface InputSectionProps {
 export default function InputSection({ item, isFocused }: InputSectionProps) {
   const isTTSAvailable = item.input.TTS.trim() !== "";
   const { playAudio } = useAudio();
+  const { setInputText } = useInputText();
+
+  const handleLongPress = () => {
+    const text = item.input.text;
+    setInputText(text);
+  };
 
   return (
     <View className="flex-row items-center justify-between mb-4 pb-3 border-b border-gray-200">
-      <Text
-        className={`${isFocused ? "text-2xl" : "text-xl"} font-bold text-text-primary flex-1 mr-2`}
-      >
-        {item.input.text}
-      </Text>
+      <TouchableOpacity onLongPress={handleLongPress} className="flex-1 mr-2">
+        <Text
+          className={`${isFocused ? "text-2xl" : "text-xl"} font-bold text-text-primary`}
+        >
+          {item.input.text}
+        </Text>
+      </TouchableOpacity>
       {isFocused && (
         <TouchableOpacity
           onPress={() => isTTSAvailable && playAudio(item.input.TTS)}

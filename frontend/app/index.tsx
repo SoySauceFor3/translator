@@ -1,16 +1,16 @@
 import History from "@/app/components/History";
 import { TranslatorCard } from "@/app/components/TranslatorCard";
+import { InputTextProvider } from "@/app/contexts/InputTextContext";
 import { RecordHistoryProvider } from "@/app/contexts/RecordHistoryContext";
 import React from "react";
-import { View } from "react-native";
 
 export default function Index() {
   return (
     <RecordHistoryProvider>
-      <View>
+      <InputTextProvider>
         <TranslatorCard />
         <History />
-      </View>
+      </InputTextProvider>
     </RecordHistoryProvider>
   );
 }
