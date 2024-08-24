@@ -31,9 +31,9 @@ const Record: React.FC<RecordProps> = ({
         ([toLang, translation], entryIdx) => (
           <Entry
             key={`${record.id}-${toLang.id}`}
+            recordId={record.id}
             toLang={toLang}
             piece={translation}
-            entryIdx={entryIdx}
             isFocused={isFocused}
             confirmLang={confirmLang}
             setConfirmLang={setConfirmLang}

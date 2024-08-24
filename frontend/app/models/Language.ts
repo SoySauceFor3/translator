@@ -35,6 +35,8 @@ export function getLanguage(locale: Locale): Language | undefined {
       bestMatch = lang;
     }
   }
-  console.log("Language not found for locale", locale.languageTag);
+  if (!bestMatch) {
+    console.warn("Language for locale is not found", locale.languageTag);
+  }
   return bestMatch;
 }

@@ -1,3 +1,4 @@
+import { useConfirmation } from "@/app/hooks/useConfirmation";
 import { Language } from "@/app/models/Language";
 import { Piece } from "@/app/models/Record";
 import React, { useEffect } from "react";
@@ -5,9 +6,9 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Buttons from "./Buttons";
 
 interface TranslationEntryProps {
+  recordId: string;
   toLang: Language;
   piece: Piece;
-  entryIdx: number;
   isFocused: boolean;
   confirmLang: Language | undefined;
   setConfirmLang: (lang: Language | undefined) => void;
@@ -21,6 +22,7 @@ enum Colors {
 }
 
 const Entry: React.FC<TranslationEntryProps> = ({
+  recordId,
   toLang,
   piece,
   isFocused,
@@ -33,6 +35,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
       setConfirmationMode(false);
     }
   }, [isFocused]);
+  useConfirmation(recordId, toLang, piece, confirmLang, confirmationMode);
 
   return (
     <View className="mt-4">
@@ -69,7 +72,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
               confirmationMode ? Colors.TEXT_PRESSED : Colors.TEXT
             } flex-1`}
           >
-            {confirmationMode && confirmLang && piece.confirmations
+            {confirmationMode && confirmLang
               ? piece.confirmations.get(confirmLang) ||
                 `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
               : piece.text || "...🖊️..."}
