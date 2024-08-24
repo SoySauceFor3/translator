@@ -11,6 +11,12 @@ interface ConfirmLangSelectorProps {
   onConfirmLangChange: (lang: Language | undefined) => void;
 }
 
+const getFontSizeClass = (text: string) => {
+  if (text.length <= 4) return "text-base";
+  if (text.length <= 6) return "text-sm";
+  return "text-xs";
+};
+
 export default function ConfirmLangSelector({
   toLang,
   confirmLang,
@@ -19,6 +25,9 @@ export default function ConfirmLangSelector({
   const [isOpen, setIsOpen] = useState(false);
   const { reorderedLangs } = useLanguages();
   const confirmLangs = reorderedLangs.filter((lang) => lang.id !== toLang.id);
+
+  const displayText = confirmLang?.acronym || "Select Language";
+  const fontSizeClass = getFontSizeClass(displayText);
 
   return (
     <View>
@@ -30,7 +39,9 @@ export default function ConfirmLangSelector({
             onPress={() => setIsOpen(true)}
             className="flex-row items-center justify-between p-2 bg-secondary-light rounded-md"
           >
-            <Text>{confirmLang?.acronym || "Select Language"}</Text>
+            <Text className={`${fontSizeClass} font-semibold`}>
+              {displayText}
+            </Text>
             <Icon name="chevron-down" size={12} color="#3E2723" />
           </TouchableOpacity>
         }

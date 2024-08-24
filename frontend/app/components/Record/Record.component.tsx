@@ -27,19 +27,22 @@ const Record: React.FC<RecordProps> = ({
       }`}
     >
       <InputSection item={record} isFocused={isFocused} />
-      {Array.from(record.translations.entries()).map(
-        ([toLang, translation], entryIdx) => (
-          <Entry
-            key={`${record.id}-${toLang.id}`}
-            recordId={record.id}
-            toLang={toLang}
-            piece={translation}
-            isFocused={isFocused}
-            confirmLang={confirmLang}
-            setConfirmLang={setConfirmLang}
-          />
-        )
-      )}
+      <View className="space-y-4">
+        {Array.from(record.translations.entries()).map(
+          ([toLang, translation], entryIdx, array) => (
+            <Entry
+              key={`${record.id}-${toLang.id}`}
+              recordId={record.id}
+              toLang={toLang}
+              piece={translation}
+              isFocused={isFocused}
+              confirmLang={confirmLang}
+              setConfirmLang={setConfirmLang}
+              parentStyle={entryIdx < array.length - 1 ? "mb-4" : ""}
+            />
+          )
+        )}
+      </View>
     </View>
   );
 };

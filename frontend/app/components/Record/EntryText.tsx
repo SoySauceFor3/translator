@@ -47,10 +47,10 @@ const EntryText: React.FC<EntryTextProps> = ({
   };
 
   return (
-    <View className="flex-row items-center flex-1 relative">
+    <View className="flex-1">
       <TouchableOpacity
         onPress={handleLongPress}
-        className="flex-1 "
+        className="flex-row items-start flex-1 relative h-full"
         activeOpacity={1}
       >
         <Text

@@ -26,7 +26,7 @@ export default function Buttons({
   const { playAudio } = useAudio();
 
   return (
-    <View className="w-20">
+    <View className="w-full ">
       {isConfirmationMode ? (
         <ConfirmLangSelector
           toLang={toLang}
@@ -34,7 +34,7 @@ export default function Buttons({
           onConfirmLangChange={onConfirmLangChange}
         />
       ) : (
-        <View className="flex-row justify-between">
+        <View className="flex-row justify-between ">
           <TouchableOpacity
             onPress={turnOnConfirmationMode}
             className="p-2 rounded-full bg-secondary-light"

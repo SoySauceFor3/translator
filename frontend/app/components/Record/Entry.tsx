@@ -13,6 +13,7 @@ interface TranslationEntryProps {
   isFocused: boolean;
   confirmLang: Language | undefined;
   setConfirmLang: (lang: Language | undefined) => void;
+  parentStyle?: string; // This is needed because somehow space-y-4 is not working.
 }
 
 enum Colors {
@@ -29,6 +30,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
   isFocused,
   confirmLang,
   setConfirmLang,
+  parentStyle = "",
 }) => {
   // Confirmation mode
   const [confirmationMode, setConfirmationMode] = useState(false);
@@ -42,7 +44,7 @@ const Entry: React.FC<TranslationEntryProps> = ({
   useConfirmation(recordId, toLang, piece, confirmLang, confirmationMode);
 
   return (
-    <View className="mt-4">
+    <View className={`${parentStyle}`}>
       <TouchableOpacity
         onPress={() => setConfirmationMode(false)}
         activeOpacity={confirmationMode ? 0.2 : 1}
@@ -51,8 +53,12 @@ const Entry: React.FC<TranslationEntryProps> = ({
           confirmationMode ? Colors.PRESSED : Colors.BACKGROUND
         }`}
       >
-        <View className="flex-row items-start flex-1 mr-2">
-          <View className="flex-col items-start mr-3">
+        <View className="flex-row items-start flex-1 ">
+          <View
+            className={`flex-col items-start ${
+              isFocused ? "w-20" : "w-14"
+            } mr-2 `}
+          >
             <Text
               className={`text-lg font-semibold mb-2 ${
                 confirmationMode ? Colors.TEXT_PRESSED : "text-secondary-dark"
@@ -71,16 +77,18 @@ const Entry: React.FC<TranslationEntryProps> = ({
               />
             )}
           </View>
-          <EntryText
-            isFocused={isFocused}
-            confirmationMode={confirmationMode}
-            text={
-              confirmationMode && confirmLang
-                ? piece.confirmations.get(confirmLang) ||
-                  `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
-                : piece.text || "...🖊️..."
-            }
-          />
+          <View className="flex-1">
+            <EntryText
+              isFocused={isFocused}
+              confirmationMode={confirmationMode}
+              text={
+                confirmationMode && confirmLang
+                  ? piece.confirmations.get(confirmLang) ||
+                    `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
+                  : piece.text || "...🖊️..."
+              }
+            />
+          </View>
         </View>
       </TouchableOpacity>
     </View>
