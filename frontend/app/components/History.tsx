@@ -4,7 +4,7 @@ import { useConfirmLang } from "@/app/hooks/useConfirmLanguage";
 import React, { useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
-export default function TranslationHistory() {
+export default function History() {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const { confirmLang, setConfirmLang } = useConfirmLang();
 

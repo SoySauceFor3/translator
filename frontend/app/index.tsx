@@ -1,4 +1,4 @@
-import TranslationHistory from "@/app/components/TranslationHistory";
+import History from "@/app/components/History";
 import { TranslatorCard } from "@/app/components/TranslatorCard";
 import { RecordHistoryProvider } from "@/app/contexts/RecordHistoryContext";
 import React from "react";
@@ -9,7 +9,7 @@ export default function Index() {
     <RecordHistoryProvider>
       <View>
         <TranslatorCard />
-        <TranslationHistory />
+        <History />
       </View>
     </RecordHistoryProvider>
   );
