@@ -19,31 +19,31 @@ export const useTranslator = (toLanguages: Language[]) => {
 
   const handleTranslateRequest = useCallback(
     async (input: string) => {
-      const translation = new Record(new Piece(input, "", new Map()));
-      addRecord(translation);
+      const record = new Record(new Piece(input, "", new Map()));
+      addRecord(record);
 
       // Input TTS
       fetchAudioBase64(input).then((audio: string) => {
-        translation.input.TTS = audio;
-        updateRecord(translation);
+        record.input.TTS = audio;
+        updateRecord(record);
       });
 
       // Translations
       toLanguages.forEach(async (toLang) => {
         // Add a empty Piece for the toLang.
         const piece = new Piece("", "", new Map());
-        translation.translations.set(toLang, piece);
-        updateRecord(translation);
+        record.translations.set(toLang, piece);
+        updateRecord(record);
 
         // Get translation.
         const translatedText = await fetchTranslation(input, toLang);
         piece.text = translatedText;
-        updateRecord(translation);
+        updateRecord(record);
 
         // Get TTS for the translation.
         const audio = await fetchAudioBase64(translatedText);
         piece.TTS = audio;
-        updateRecord(translation);
+        updateRecord(record);
 
         // Confirmations.
         const confirmLangs: Language[] = Array.from(
@@ -62,7 +62,7 @@ export const useTranslator = (toLanguages: Language[]) => {
           );
 
           piece.confirmations.set(confirmLang, confirmation);
-          updateRecord(translation);
+          updateRecord(record);
         }
       });
     },
