@@ -1,18 +1,14 @@
 import { Record } from "@/app/components/Record";
+import { useRecordHistory } from "@/app/contexts/RecordHistoryContext";
 import { useConfirmLang } from "@/app/hooks/useConfirmLanguage";
-import { Record as RecordModel } from "@/app/models/Record";
 import React, { useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
-interface TranslationHistoryProps {
-  history: RecordModel[];
-}
-
-export default function TranslationHistory({
-  history,
-}: TranslationHistoryProps) {
+export default function TranslationHistory() {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const { confirmLang, setConfirmLang } = useConfirmLang();
+
+  const { history } = useRecordHistory();
 
   useEffect(() => {
     if (history.length > 0) {
@@ -27,7 +23,7 @@ export default function TranslationHistory({
   return (
     <View className="w-full p-4 max-h-[53vh]">
       <FlatList
-        data={[...history].reverse()}
+        data={[...history].reverse()} // So the newest item is at the top, and it is a copy of history.
         keyExtractor={(record, _) => record.id}
         renderItem={({ item: record, index }) => (
           <TouchableOpacity onPress={() => handleItemPress(index)}>

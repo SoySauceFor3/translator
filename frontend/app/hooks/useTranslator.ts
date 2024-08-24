@@ -1,3 +1,4 @@
+import { useRecordHistory } from "@/app/contexts/RecordHistoryContext";
 import { useLanguages } from "@/app/hooks/useLanguages";
 import { Language } from "@/app/models/Language";
 import { Piece, Record } from "@/app/models/Record";
@@ -11,23 +12,20 @@ const { fetchAudioBase64, fetchTranslation } = useFakeApi
   ? require("@/app/services/fakeApi")
   : require("@/app/services/api/openai");
 
-export const useTranslator = (
-  toLanguages: Language[],
-  onAddNewTranslation: (translation: Record) => void,
-  onUpdateTranslation: (translation: Record) => void
-) => {
+export const useTranslator = (toLanguages: Language[]) => {
   const { systemLangs } = useLanguages();
   const { confirmLang } = useConfirmLang(); // the last used confirm language.
+  const { addRecord, updateRecord } = useRecordHistory();
 
   const handleTranslateRequest = useCallback(
     async (input: string) => {
       const translation = new Record(new Piece(input, "", new Map()));
-      onAddNewTranslation(translation);
+      addRecord(translation);
 
       // Input TTS
       fetchAudioBase64(input).then((audio: string) => {
         translation.input.TTS = audio;
-        onUpdateTranslation(translation);
+        updateRecord(translation);
       });
 
       // Translations
@@ -35,17 +33,17 @@ export const useTranslator = (
         // Add a empty Piece for the toLang.
         const piece = new Piece("", "", new Map());
         translation.translations.set(toLang, piece);
-        onUpdateTranslation(translation);
+        updateRecord(translation);
 
         // Get translation.
         const translatedText = await fetchTranslation(input, toLang);
         piece.text = translatedText;
-        onUpdateTranslation(translation);
+        updateRecord(translation);
 
         // Get TTS for the translation.
         const audio = await fetchAudioBase64(translatedText);
         piece.TTS = audio;
-        onUpdateTranslation(translation);
+        updateRecord(translation);
 
         // Confirmations.
         const confirmLangs: Language[] = Array.from(
@@ -64,17 +62,11 @@ export const useTranslator = (
           );
 
           piece.confirmations.set(confirmLang, confirmation);
-          onUpdateTranslation(translation);
+          updateRecord(translation);
         }
       });
     },
-    [
-      toLanguages,
-      confirmLang,
-      systemLangs,
-      onAddNewTranslation,
-      onUpdateTranslation,
-    ]
+    [toLanguages, confirmLang, systemLangs, addRecord, updateRecord]
   );
 
   return { handleTranslateRequest };
