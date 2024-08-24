@@ -1,4 +1,6 @@
 import { useInputText } from "@/app/contexts/InputTextContext";
+import { useTranslator } from "@/app/hooks/useTranslator";
+import { Language } from "@/app/models/Language";
 import React from "react";
 import {
   Keyboard,
@@ -10,14 +12,12 @@ import {
 import AudioRecorder from "./AudioRecorder";
 
 interface InputSectionProps {
-  handleTranslateRequest: (text: string) => void;
+  toLangs: Language[];
 }
 
-const InputSection: React.FC<InputSectionProps> = ({
-  handleTranslateRequest,
-}) => {
+const InputSection: React.FC<InputSectionProps> = ({ toLangs }) => {
   const { inputText, setInputText, inputRef } = useInputText();
-
+  const { handleTranslateRequest } = useTranslator(toLangs);
   const handleTranslate = () => {
     Keyboard.dismiss();
     handleTranslateRequest(inputText);
