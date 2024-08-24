@@ -1,12 +1,13 @@
 import { useInputText } from "@/app/contexts/InputTextContext";
 import { useAudio } from "@/app/hooks/useAudio";
 import { Record } from "@/app/models/Record";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Animated,
   Clipboard,
   Text,
   TouchableOpacity,
+  Vibration,
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -28,10 +29,38 @@ export default function InputSection({ item, isFocused }: InputSectionProps) {
   };
 
   const [fadeAnim] = useState(new Animated.Value(0));
-  const copyText = () => {
-    const textToCopy = text;
+  const [pressAnim] = useState(new Animated.Value(0));
+  const longPressTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [isLongPress, setIsLongPress] = useState(false);
 
-    Clipboard.setString(textToCopy);
+  const startLongPress = useCallback(() => {
+    setIsLongPress(false);
+    Animated.timing(pressAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
+
+    longPressTimeout.current = setTimeout(() => {
+      setIsLongPress(true);
+      putTextToInputWindow();
+      Vibration.vibrate(100); // Provide haptic feedback
+    }, 1000);
+  }, []);
+
+  const endLongPress = useCallback(() => {
+    if (longPressTimeout.current) {
+      clearTimeout(longPressTimeout.current);
+    }
+    Animated.timing(pressAnim, {
+      toValue: 0,
+      duration: 100,
+      useNativeDriver: false,
+    }).start();
+  }, []);
+
+  const copyText = () => {
+    Clipboard.setString(text);
     console.log("copied");
 
     Animated.sequence([
@@ -49,19 +78,36 @@ export default function InputSection({ item, isFocused }: InputSectionProps) {
     ]).start();
   };
 
+  const handlePress = () => {
+    if (!isLongPress) {
+      copyText();
+    }
+    setIsLongPress(false);
+  };
+
+  const interpolatedColor = pressAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["rgba(0,0,0,0)", "rgba(0,0,0,0.1)"],
+  });
+
   return (
     <View className="flex-row items-center justify-between mb-4 pb-3 border-b border-gray-200">
       <TouchableOpacity
         activeOpacity={1}
-        onPress={putTextToInputWindow}
-        onLongPress={copyText}
+        onPress={handlePress}
+        onPressIn={startLongPress}
+        onPressOut={endLongPress}
         className="flex-1 mr-2"
       >
-        <Text
-          className={`${isFocused ? "text-2xl" : "text-xl"} font-bold text-text-primary`}
+        <Animated.View
+          style={{ backgroundColor: interpolatedColor, borderRadius: 8 }}
         >
-          {item.input.text}
-        </Text>
+          <Text
+            className={`${isFocused ? "text-2xl" : "text-xl"} font-bold text-text-primary p-2`}
+          >
+            {item.input.text}
+          </Text>
+        </Animated.View>
         <Animated.View
           style={{
             opacity: fadeAnim,
