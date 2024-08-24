@@ -2,15 +2,9 @@ import { useRecordHistory } from "@/app/contexts/RecordHistoryContext";
 import { useLanguages } from "@/app/hooks/useLanguages";
 import { Language } from "@/app/models/Language";
 import { Piece, Record } from "@/app/models/Record";
+import { fetchAudioBase64, fetchTranslation } from "@/app/services/apiSelector";
 import { useCallback } from "react";
 import { useConfirmLang } from "./useConfirmLanguage";
-
-// Determine which API to use
-const useFakeApi = process.env.EXPO_PUBLIC_USE_FAKE_API === "true";
-
-const { fetchAudioBase64, fetchTranslation } = useFakeApi
-  ? require("@/app/services/fakeApi")
-  : require("@/app/services/api/openai");
 
 export const useTranslator = (toLanguages: Language[]) => {
   const { systemLangs } = useLanguages();

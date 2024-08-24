@@ -38,3 +38,21 @@ export async function fetchAudioBase64(inputText: string): Promise<string> {
     return "";
   }
 }
+
+export const fetchSpeechToText = async (uri: string): Promise<string> => {
+  console.log("FAKE speech to text for URI:", uri);
+
+  // Simulate processing delay
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Generate a fake transcription
+  const fakeTranscriptions = [
+    "This is a fake transcription of the audio.",
+    "Hello, this is a test of the speech to text function.",
+    "The quick brown fox jumps over the lazy dog.",
+    "Welcome to the world of artificial intelligence and machine learning.",
+  ];
+
+  const randomIndex = Math.floor(Math.random() * fakeTranscriptions.length);
+  return fakeTranscriptions[randomIndex];
+};

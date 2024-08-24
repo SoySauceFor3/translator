@@ -1,4 +1,4 @@
-import { fetchSpeechToText } from "@/app/services/api/myOwnBackend";
+import { fetchSpeechToText } from "@/app/services/apiSelector";
 import { Audio } from "expo-av";
 import { useState } from "react";
 

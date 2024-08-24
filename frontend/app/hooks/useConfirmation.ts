@@ -1,7 +1,7 @@
 import { useRecordHistory } from "@/app/contexts/RecordHistoryContext";
 import { Language } from "@/app/models/Language";
 import { Piece } from "@/app/models/Record";
-import { fetchTranslation } from "@/app/services/api/openai";
+import { fetchTranslation } from "@/app/services/apiSelector";
 import { useCallback, useEffect } from "react";
 
 export const useConfirmation = (

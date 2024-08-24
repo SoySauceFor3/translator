@@ -349,16 +349,3 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
   }
   return btoa(binary);
 }
-
-export async function fetchSpeechToText(recordingUri: string): Promise<string> {
-  if (!recordingUri) return "";
-
-  const response = await fetch(recordingUri);
-  const transcription = await openai.audio.transcriptions.create({
-    file: response,
-    model: "whisper-1",
-  });
-
-  console.log("transcription::: ", transcription.text);
-  return transcription.text;
-}
