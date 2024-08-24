@@ -11,12 +11,10 @@ import AudioRecorder from "./AudioRecorder";
 
 interface InputSectionProps {
   handleTranslateRequest: (text: string) => void;
-  handleTranscription: (transcription: string) => void;
 }
 
 const InputSection: React.FC<InputSectionProps> = ({
   handleTranslateRequest,
-  handleTranscription,
 }) => {
   const { inputText, setInputText, inputRef } = useInputText();
 
@@ -41,7 +39,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         multiline
       />
       <View className="mt-6 flex-row justify-between items-center">
-        <AudioRecorder onTranscription={handleTranscription} />
+        <AudioRecorder />
         <TouchableOpacity
           className={`px-8 py-4 rounded-full shadow-md ${
             isInputEmpty ? "bg-gray-400" : "bg-primary"

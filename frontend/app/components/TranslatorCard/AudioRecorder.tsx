@@ -1,21 +1,19 @@
+import { useInputText } from "@/app/contexts/InputTextContext";
 import { useAudioRecorder } from "@/app/hooks/useAudioRecorder";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 
-interface AudioRecorderProps {
-  onTranscription: (transcription: string) => void; // Whatever the caller want this component to do.
-}
-
-export default function AudioRecorder({ onTranscription }: AudioRecorderProps) {
+export default function AudioRecorder() {
   const { isRecording, startRecording, stopRecording, transcription } =
     useAudioRecorder();
+  const { setInputText } = useInputText();
 
   useEffect(() => {
     if (transcription) {
-      onTranscription(transcription);
+      setInputText(transcription);
     }
-  }, [transcription, onTranscription]);
+  }, [transcription, setInputText]);
 
   return (
     <TouchableOpacity
