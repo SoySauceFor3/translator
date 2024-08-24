@@ -38,7 +38,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         placeholderTextColor="#999"
         multiline
       />
-      <View className="mt-6 flex-row justify-between items-center">
+      <View className="mt-6 flex-row justify-between items-center ">
         <AudioRecorder />
         <TouchableOpacity
           className={`px-8 py-4 rounded-full shadow-md ${
