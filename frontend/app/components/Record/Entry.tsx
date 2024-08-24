@@ -1,9 +1,10 @@
 import { useConfirmation } from "@/app/hooks/useConfirmation";
 import { Language } from "@/app/models/Language";
 import { Piece } from "@/app/models/Record";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Buttons from "./Buttons";
+import EntryText from "./EntryText";
 
 interface TranslationEntryProps {
   recordId: string;
@@ -29,12 +30,15 @@ const Entry: React.FC<TranslationEntryProps> = ({
   confirmLang,
   setConfirmLang,
 }) => {
-  const [confirmationMode, setConfirmationMode] = React.useState(false);
+  // Confirmation mode
+  const [confirmationMode, setConfirmationMode] = useState(false);
   useEffect(() => {
     if (!isFocused) {
       setConfirmationMode(false);
     }
   }, [isFocused]);
+
+  // Hook to get extra confirmation if needed.
   useConfirmation(recordId, toLang, piece, confirmLang, confirmationMode);
 
   return (
@@ -67,16 +71,16 @@ const Entry: React.FC<TranslationEntryProps> = ({
               />
             )}
           </View>
-          <Text
-            className={`${isFocused ? "text-lg" : "text-base"} ${
-              confirmationMode ? Colors.TEXT_PRESSED : Colors.TEXT
-            } flex-1`}
-          >
-            {confirmationMode && confirmLang
-              ? piece.confirmations.get(confirmLang) ||
-                `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
-              : piece.text || "...🖊️..."}
-          </Text>
+          <EntryText
+            isFocused={isFocused}
+            confirmationMode={confirmationMode}
+            text={
+              confirmationMode && confirmLang
+                ? piece.confirmations.get(confirmLang) ||
+                  `...🖊️...confirming for ${piece.text} in ${confirmLang.name}`
+                : piece.text || "...🖊️..."
+            }
+          />
         </View>
       </TouchableOpacity>
     </View>
